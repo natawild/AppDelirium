@@ -45,8 +45,8 @@ def get_dataset(name):
         X = dadosComGasometria.iloc[:, 0:52].values
         y = dadosComGasometria.iloc[:, -1].values
     else :
-        dadosSemGasometria = pd.read_csv('./DeliriumcomGasometria.csv')
-        X = dadosSemGasometria.iloc[:, 0:52].values
+        dadosSemGasometria = pd.read_csv('./DeliriumsemGasometria.csv')
+        X = dadosSemGasometria.iloc[:, 0:50].values
         y = dadosSemGasometria.iloc[:, -1].values
     return X, y
 
@@ -118,7 +118,8 @@ def get_user_input_with_gasome():
     ureia = st.sidebar.slider('ureia', 1, 280, 1)
     creatinina = st.sidebar.slider('creatinina', 0, 30, 1)
     pcr = st.sidebar.slider('pcr', 2, 500, 1)
-    ph = st.sidebar.slider('ph', 2, 500, 1)
+    phrange = st.slider(min_value=7.00, max_value=7,90, step=0.01)
+    ph = st.sidebar.slider('ph', phrange)
     ca = st.sidebar.slider('ca', 0, 2, 1)
     co2 = st.sidebar.slider('co2', 10, 130, 1)
     o2 = st.sidebar.slider('o2', 30, 180, 1)
