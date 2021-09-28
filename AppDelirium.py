@@ -124,7 +124,7 @@ def get_user_input_with_gasome():
     o2 = st.sidebar.slider('o2', min_value=30.00, max_value=180.00, step=0.01)
     hco3 = st.sidebar.slider('hco3', min_value=3.00, max_value=48.00, step=0.01)
     rosuvastatina = st.sidebar.checkbox('Rosuvastatina')
-    atorvastatina = st.sidebar.checkbox('Atorvastatina')
+    atorvastatina = st.sidebar.checkbox('Atorvastatina', value = 1 )
     pravastatina = st.sidebar.checkbox('Pravastatina')
     sinvastatina = st.sidebar.checkbox('Sinvastatina')
     fluvastatina = st.sidebar.checkbox('Fluvastatina')
