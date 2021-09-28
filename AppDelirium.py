@@ -9,6 +9,8 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier
 
 from sklearn.metrics import accuracy_score
+import dadosSemGasometria 
+
 
 #Criacao de um título e subtitulo
 st.write("""
@@ -109,6 +111,7 @@ st.write(f'Classifier = {classifier_name}')
 st.write(f'Accuracy =', acc)
 
 
+dadosSemGasometria.get_user_input_without_gasome()
  
 
 def get_user_input_with_gasome():

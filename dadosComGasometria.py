@@ -11,10 +11,9 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score
 
 def get_dataset(name):
-    if name == 'Com Gasometria':
-        return pd.read_csv('./DeliriumcomGasometria.csv')
-    return pd.read_csv('./DeliriumsemGasometria.csv')
-
+    if name == 'Sem Gasometria':
+        return pd.read_csv('./DeliriumsemGasometria.csv')
+    return pd.read_csv('./DeliriumcomGasometria.csv')
 
 
 csvDados = get_dataset(dataset_name)
@@ -22,7 +21,7 @@ X = csvDados.iloc[:, 1:-1].values
 y = csvDados.iloc[:, -1].values
 
 
-def get_user_input_without_gasome():
+def get_user_input_with_gasome():
     proveniencia = st.sidebar.slider('Proveniencia', 0, 5, 1)
     idade = st.sidebar.slider('Idade', 18, 120, 1)
     gender = st.sidebar.radio('Selecione o sexo:', ('Masculino', 'Feminino'))
@@ -32,6 +31,11 @@ def get_user_input_without_gasome():
     ureia = st.sidebar.slider('ureia', 1, 280, 1)
     creatinina = st.sidebar.slider('creatinina', min_value=0.10, max_value=20.00, step=0.01)
     pcr = st.sidebar.slider('pcr', min_value=2.90, max_value=500.00, step=0.01)
+    ph = st.sidebar.slider('ph',min_value=7.00, max_value=7.770, step=0.001)
+    ca = st.sidebar.slider('ca', min_value=0.50, max_value=1.40, step=0.01)
+    co2 = st.sidebar.slider('co2', min_value=10.00, max_value=130.00, step=0.01)
+    o2 = st.sidebar.slider('o2', min_value=30.00, max_value=180.00, step=0.01)
+    hco3 = st.sidebar.slider('hco3', min_value=3.00, max_value=48.00, step=0.01)
     rosuvastatina = st.sidebar.checkbox('Rosuvastatina', help = 'WIP: Define')
     atorvastatina = st.sidebar.checkbox('Atorvastatina')
     pravastatina = st.sidebar.checkbox('Pravastatina')
@@ -82,6 +86,11 @@ def get_user_input_without_gasome():
                 'ureia': ureia,
                 'creatinina': creatinina,
                 'pcr' : pcr, 
+                'ph' : ph,
+                'ca' : ca,
+                'ureia' : ureia,
+                'co2': co2,
+                'hco3': hco3,
                 'rosuvastatina' : convertCheckboxToInt(rosuvastatina),
                 'atorvastatina' : convertCheckboxToInt(atorvastatina), 
                 'pravastatina': convertCheckboxToInt(pravastatina),
@@ -135,3 +144,5 @@ acc = accuracy_score(y_test, y_pred)
 
 st.write(f'Classifier = {classifier_name}')
 st.write(f'Accuracy =', acc)
+
+    
