@@ -38,27 +38,33 @@ classifier_name = st.sidebar.selectbox(
 
 
 def get_dataset(name):
-    dadosComGasometria = None
-    dadosSemGasometria = None
     if name == 'Com Gasometria':
-        dadosComGasometria = pd.read_csv('./DeliriumcomGasometria.csv')
-        X = dadosComGasometria.iloc[:, 0:52].values
-        y = dadosComGasometria.iloc[:, -1].values
-    else :
-        dadosSemGasometria = pd.read_csv('./DeliriumsemGasometria.csv')
-        X = dadosSemGasometria.iloc[:, 0:50].values
-        y = dadosSemGasometria.iloc[:, -1].values
-    return X, y
+        return pd.read_csv('./DeliriumcomGasometria.csv')
+    return pd.read_csv('./DeliriumsemGasometria.csv')
+
+def convertCheckboxToInt(variavel):
+    if variavel == 1:
+        return 1
+    return 0
+
+# TODO: confirmar valores a baixo
+def convertGenderToInt(variavel):
+    if variavel == 'Masculino':
+        return 0
+    return 1
 
 
+csvDados = get_dataset(dataset_name)
+X = csvDados.iloc[:, 1:-1].values
+y = csvDados.iloc[:, -1].values
 
-X, y = get_dataset(dataset_name)
 # configurar um sub titulo
 st.subheader('Data Information:')
 st.write('Shape of dataset:', X.shape)
 st.write('Head of dataset:', X) 
 st.write('Head of dataset:', y) 
 st.write('number of classes:', len(np.unique(y)))
+#st.write('ARRAY;', columns)
 
 def add_parameter_ui(clf_name):
     params = dict()
@@ -103,15 +109,12 @@ st.write(f'Classifier = {classifier_name}')
 st.write(f'Accuracy =', acc)
 
 
-gender = get_dataset(dataset_name)
-st.write(gender)
-
  
 
 def get_user_input_with_gasome():
     proveniencia = st.sidebar.slider('Proveniencia', 0, 5, 1)
     idade = st.sidebar.slider('Idade', 18, 120, 1)
-    gender = st.sidebar.slider('Selecione o sexo:', 0, 1, 1)
+    gender = st.sidebar.radio('Selecione o sexo:', ('Masculino', 'Feminino'))
     tempo = st.sidebar.slider('Tempo em horas', 0, 15, 1)
     glicose = st.sidebar.slider('glicose', 20, 1000, 1)
     sodio = st.sidebar.slider('sodio', 100, 170, 1)
@@ -123,8 +126,8 @@ def get_user_input_with_gasome():
     co2 = st.sidebar.slider('co2', min_value=10.00, max_value=130.00, step=0.01)
     o2 = st.sidebar.slider('o2', min_value=30.00, max_value=180.00, step=0.01)
     hco3 = st.sidebar.slider('hco3', min_value=3.00, max_value=48.00, step=0.01)
-    rosuvastatina = st.sidebar.checkbox('Rosuvastatina')
-    atorvastatina = st.sidebar.checkbox('Atorvastatina', value = 1 )
+    rosuvastatina = st.sidebar.checkbox('Rosuvastatina', help = 'WIP: Define')
+    atorvastatina = st.sidebar.checkbox('Atorvastatina')
     pravastatina = st.sidebar.checkbox('Pravastatina')
     sinvastatina = st.sidebar.checkbox('Sinvastatina')
     fluvastatina = st.sidebar.checkbox('Fluvastatina')
@@ -163,12 +166,10 @@ def get_user_input_with_gasome():
     trospium = st.sidebar.checkbox('Trospium')
     alcoolico = st.sidebar.slider('Alcoolico', 0, 1, 1)
 
-
-
     # Guardar o dicionário numa variável
     user_data = {'proveniencia': proveniencia,
                 'idade': idade,
-                'gender': gender,
+                'gender': convertGenderToInt(gender),
                 'tempo': tempo,
                 'glicose': glicose,
                 'sodio': sodio,
@@ -180,44 +181,44 @@ def get_user_input_with_gasome():
                 'ureia' : ureia,
                 'co2': co2,
                 'hco3': hco3,
-                'rosuvastatina' : rosuvastatina,
-                'atorvastatina' : atorvastatina, 
-                'pravastatina': pravastatina,
-                'sinvastatina': sinvastatina,
-                'fluvastatina' : fluvastatina, 
-                'alprazolam' : alprazolam, 
-                'captopril' : captopril, 
-                'codeine' : codeine, 
-                'desloratadine' : desloratadine, 
-                'diazepam' : diazepam, 
-                'lorazepam': lorazepam,
-                'digoxin': digoxin, 
-                'dipyridamole' : dipyridamole, 
-                'furosemide' : furosemide, 
-                'fluvoxamine' : fluvoxamine, 
-                'haloperidol' : haloperidol, 
-                'hydrocortisone' : hydrocortisone, 
-                'iloperidone' : iloperidone, 
-                'morphine' : morphine, 
-                'nifedipine' : nifedipine, 
-                'paliperidone' : paliperidone, 
-                'prednisone' : prednisone, 
-                'ranitidine' : ranitidine, 
-                'risperidone' : risperidone, 
-                'trazodone' : trazodone, 
-                'venlafaxine' : venlafaxine, 
-                'warfarin' : warfarin, 
-                'amitriptyline' : amitriptyline, 
-                'hydroxyzine' : hydroxyzine, 
-                'paroxetine' : paroxetine, 
-                'quetiapine' : quetiapine, 
-                'scopolamine' : scopolamine, 
-                'trihexyphenidyl' : trihexyphenidyl, 
-                'clonidine' : clonidine, 
-                'sertralina' : sertralina, 
-                'tramadol' : tramadol, 
-                'mexazolam' : mexazolam, 
-                'trospium' : trospium,  
+                'rosuvastatina' : convertCheckboxToInt(rosuvastatina),
+                'atorvastatina' : convertCheckboxToInt(atorvastatina), 
+                'pravastatina': convertCheckboxToInt(pravastatina),
+                'sinvastatina': convertCheckboxToInt(sinvastatina),
+                'fluvastatina' : convertCheckboxToInt(fluvastatina), 
+                'alprazolam' : convertCheckboxToInt(alprazolam), 
+                'captopril' : convertCheckboxToInt(captopril), 
+                'codeine' : convertCheckboxToInt(codeine), 
+                'desloratadine' : convertCheckboxToInt(desloratadine), 
+                'diazepam' : convertCheckboxToInt(diazepam), 
+                'lorazepam': convertCheckboxToInt(lorazepam),
+                'digoxin': convertCheckboxToInt(digoxin), 
+                'dipyridamole' : convertCheckboxToInt(dipyridamole), 
+                'furosemide' : convertCheckboxToInt(furosemide), 
+                'fluvoxamine' : convertCheckboxToInt(fluvoxamine), 
+                'haloperidol' : convertCheckboxToInt(haloperidol), 
+                'hydrocortisone' : convertCheckboxToInt(hydrocortisone), 
+                'iloperidone' : convertCheckboxToInt(iloperidone), 
+                'morphine' : convertCheckboxToInt(morphine), 
+                'nifedipine' : convertCheckboxToInt(nifedipine), 
+                'paliperidone' : convertCheckboxToInt(paliperidone), 
+                'prednisone' : convertCheckboxToInt(prednisone), 
+                'ranitidine' : convertCheckboxToInt(ranitidine), 
+                'risperidone' : convertCheckboxToInt(risperidone), 
+                'trazodone' : convertCheckboxToInt(trazodone), 
+                'venlafaxine' : convertCheckboxToInt(venlafaxine), 
+                'warfarin' : convertCheckboxToInt(warfarin), 
+                'amitriptyline' : convertCheckboxToInt(amitriptyline), 
+                'hydroxyzine' : convertCheckboxToInt(hydroxyzine), 
+                'paroxetine' : convertCheckboxToInt(paroxetine), 
+                'quetiapine' : convertCheckboxToInt(quetiapine), 
+                'scopolamine' : convertCheckboxToInt(scopolamine), 
+                'trihexyphenidyl' : convertCheckboxToInt(trihexyphenidyl), 
+                'clonidine' : convertCheckboxToInt(clonidine), 
+                'sertralina' : convertCheckboxToInt(sertralina), 
+                'tramadol' : convertCheckboxToInt(tramadol), 
+                'mexazolam' : convertCheckboxToInt(mexazolam), 
+                'trospium' : convertCheckboxToInt(trospium),  
                 'alcoolico': alcoolico
 
                  }
