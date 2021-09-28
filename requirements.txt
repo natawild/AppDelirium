@@ -4,4 +4,3 @@ streamlit
 sklearn
 pandas
 numpy
-python >= 3.9
