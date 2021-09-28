@@ -3,7 +3,6 @@ import numpy as np
 import pandas as pd
 
 import matplotlib.pyplot as plt
-from sklearn import datasets
 from sklearn.model_selection import train_test_split
 
 from sklearn.linear_model import LogisticRegression
@@ -47,7 +46,7 @@ def get_dataset(name):
         y = dadosComGasometria.iloc[:, -1].values
     else :
         dadosSemGasometria = pd.read_csv('./DeliriumcomGasometria.csv')
-        X = dadosSemGasometria.iloc[:, 0:53].values
+        X = dadosSemGasometria.iloc[:, 0:52].values
         y = dadosSemGasometria.iloc[:, -1].values
     return X, y
 
@@ -110,10 +109,10 @@ st.write(gender)
  
 
 def get_user_input_with_gasome():
-    proveniencia = st.sidebar.slider('Proveniencia', 18, 120, 29)
+    proveniencia = st.sidebar.slider('Proveniencia', 0, 5, 1)
     idade = st.sidebar.slider('Idade', 18, 120, 29)
     gender = st.sidebar.slider('Selecione o sexo:', 0, 1, 1)
-    tempo = st.sidebar.slider('tempo', 0, 1, 1)
+    tempo = st.sidebar.slider('tempo', 0, 15, 1)
     glicose = st.sidebar.slider('glicose', 0, 1000, 1)
     sodio = st.sidebar.slider('sodio', 100, 170, 1)
     ureia = st.sidebar.slider('ureia', 1, 280, 1)
