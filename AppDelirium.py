@@ -42,11 +42,11 @@ def get_dataset(name):
     dadosComGasometria = None
     dadosSemGasometria = None
     if name == 'Com Gasometria':
-        dadosComGasometria = pd.read_csv('/Users/user/Documents/GitHub/AppDelirium/DeliriumcomGasometria.csv')
+        dadosComGasometria = pd.read_csv('./DeliriumcomGasometria.csv')
         X = dadosComGasometria.iloc[:, 0:52].values
         y = dadosComGasometria.iloc[:, -1].values
     else :
-        dadosSemGasometria = pd.read_csv('/Users/user/Documents/GitHub/AppDelirium/DeliriumcomGasometria.csv')
+        dadosSemGasometria = pd.read_csv('./DeliriumcomGasometria.csv')
         X = dadosSemGasometria.iloc[:, 0:53].values
         y = dadosSemGasometria.iloc[:, -1].values
     return X, y
