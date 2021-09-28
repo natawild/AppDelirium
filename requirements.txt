@@ -1,3 +1,7 @@
 matplotlib
 sklearn
+streamlit
+sklearn
+pandas
+numpy
 python >= 3.9
