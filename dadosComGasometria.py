@@ -15,10 +15,16 @@ def get_dataset(name):
         return pd.read_csv('./DeliriumsemGasometria.csv')
     return pd.read_csv('./DeliriumcomGasometria.csv')
 
+def convertCheckboxToInt(variavel):
+    if variavel == 1:
+        return 1
+    return 0
 
-csvDados = get_dataset(dataset_name)
-X = csvDados.iloc[:, 1:-1].values
-y = csvDados.iloc[:, -1].values
+# TODO: confirmar valores a baixo
+def convertGenderToInt(variavel):
+    if variavel == 'Masculino':
+        return 0
+    return 1
 
 
 def get_user_input_with_gasome():
@@ -31,7 +37,7 @@ def get_user_input_with_gasome():
     ureia = st.sidebar.slider('ureia', 1, 280, 1)
     creatinina = st.sidebar.slider('creatinina', min_value=0.10, max_value=20.00, step=0.01)
     pcr = st.sidebar.slider('pcr', min_value=2.90, max_value=500.00, step=0.01)
-    ph = st.sidebar.slider('ph',min_value=7.00, max_value=7.770, step=0.001)
+    ph = st.sidebar.slider('ph',min_value=7.011, max_value=7.779, step=0.001)
     ca = st.sidebar.slider('ca', min_value=0.50, max_value=1.40, step=0.01)
     co2 = st.sidebar.slider('co2', min_value=10.00, max_value=130.00, step=0.01)
     o2 = st.sidebar.slider('o2', min_value=30.00, max_value=180.00, step=0.01)
@@ -45,13 +51,13 @@ def get_user_input_with_gasome():
     captopril = st.sidebar.checkbox('Captopril')
     codeine = st.sidebar.checkbox('Codeine')
     desloratadine = st.sidebar.checkbox('Desloratadine')
-    diazepam = st.sidebar.checkbox('Diazepam')
+    diazepam = st.sidebar.checkbox('Diazepam', help='Unisedil, Valium')
     lorazepam = st.sidebar.checkbox('Lorazepam')
     digoxin = st.sidebar.checkbox('Digoxin')
     dipyridamole = st.sidebar.checkbox('Dipyridamole')
     furosemide = st.sidebar.checkbox('Furosemide')
     fluvoxamine = st.sidebar.checkbox('Fluvoxamine')
-    haloperidol = st.sidebar.checkbox('Haloperidol')
+    haloperidol = st.sidebar.checkbox('Haloperidol', help ='Haldol')
     hydrocortisone = st.sidebar.checkbox('Hydrocortisone')
     iloperidone = st.sidebar.checkbox('Iloperidone')
     morphine = st.sidebar.checkbox('Morphine')
@@ -60,19 +66,19 @@ def get_user_input_with_gasome():
     prednisone = st.sidebar.checkbox('Prednisone')
     ranitidine = st.sidebar.checkbox('Ranitidine')
     risperidone = st.sidebar.checkbox('Risperidone')
-    trazodone = st.sidebar.checkbox('Trazodone')
+    trazodone = st.sidebar.checkbox('Trazodone', help='Triticum')
     venlafaxine = st.sidebar.checkbox('Venlafaxine')
     warfarin = st.sidebar.checkbox('Warfarin')
     amitriptyline = st.sidebar.checkbox('Amitriptyline')
     hydroxyzine = st.sidebar.checkbox('Hydroxyzine')
-    paroxetine = st.sidebar.checkbox('Paroxetine')
+    paroxetine = st.sidebar.checkbox('Paroxetine', help='Seroxat, Paxetil, Calmus, Denerval e Oxepar')
     quetiapine = st.sidebar.checkbox('Quetiapine')
-    scopolamine = st.sidebar.checkbox('Scopolamine')
+    scopolamine = st.sidebar.checkbox('Scopolamine', help='Buscopan')
     trihexyphenidyl = st.sidebar.checkbox('Trihexyphenidyl')
     clonidine = st.sidebar.checkbox('Clonidine')
     sertralina = st.sidebar.checkbox('Sertralina')
     tramadol = st.sidebar.checkbox('Tramadol')
-    mexazolam = st.sidebar.checkbox('Mexazolam')
+    mexazolam = st.sidebar.checkbox('Mexazolam', help= 'Sedoxil')
     trospium = st.sidebar.checkbox('Trospium')
     alcoolico = st.sidebar.slider('Alcoolico', 0, 1, 1)
 
@@ -131,18 +137,10 @@ def get_user_input_with_gasome():
                 'trospium' : convertCheckboxToInt(trospium),  
                 'alcoolico': alcoolico
 
-                 }
+                    }
 
-
-#### CLASSIFICATION ####
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=45673)
-
-clf.fit(X_train, y_train)
-y_pred = clf.predict(X_test)
-
-acc = accuracy_score(y_test, y_pred)
-
-st.write(f'Classifier = {classifier_name}')
-st.write(f'Accuracy =', acc)
+    # Transformar os dados num dataframe
+    features = pd.DataFrame(user_data, index=[0])
+    return features
 
     
