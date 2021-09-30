@@ -80,7 +80,7 @@ def get_user_input_with_gasome():
     tramadol = st.sidebar.checkbox('Tramadol')
     mexazolam = st.sidebar.checkbox('Mexazolam', help= 'Sedoxil')
     trospium = st.sidebar.checkbox('Trospium')
-    alcoolico = st.sidebar.slider('Alcoolico', 0, 1, 1)
+    alcoolico = st.sidebar.slider('Alcoolico', 0, 1, 0)
 
     # Guardar o dicionário numa variável
     user_data = {'proveniencia': proveniencia,
