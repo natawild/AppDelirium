@@ -1,6 +1,10 @@
 import streamlit as st
 import numpy as np
 import pandas as pd
+import category_encoders as ce
+
+# importing OneHotEncoder
+from sklearn.preprocessing import OneHotEncoder()
 
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
@@ -103,6 +107,7 @@ clf = get_classifier(classifier_name, params)
 #### CLASSIFICATION ####
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=45673)
 
+
 clf.fit(X_train, y_train)
 y_pred = clf.predict(X_test)
 
@@ -144,4 +149,9 @@ prediction = RandomForestClassifier.predict(user_input)
 # configurar um subheader e mostrar a classificação
 st.subheader('Classification:')
 st.write(prediction)
+
+
+
+print(rf_classifier.feature_importances_)
+print(f" There are {len(rf_classifier.feature_importances_)} features in total")
 
