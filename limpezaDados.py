@@ -13,7 +13,12 @@ from sklearn.linear_model import LinearRegression
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 from sklearn.model_selection import KFold
 from sklearn.model_selection import cross_val_score
-
+from numpy import asarray
+from sklearn.preprocessing import MinMaxScaler
+from pandas import DataFrame
+from sklearn.preprocessing import LabelEncoder
+from sklearn.preprocessing import OrdinalEncoder
+from sklearn.preprocessing import OneHotEncoder
 
 # load the dataset
 
@@ -27,9 +32,9 @@ dups = data.duplicated()
 # report if there are any duplicates
 print("Duplicados:\n",dups.any())
 print(data[dups])
-# list all duplica
+# list all duplicate data
 
-#data = loadtxt('oil-spill.csv', delimiter=',')
+
 #Mostra os dados que são únicos 
 for x in data.nunique().items():
     #printing unique values
@@ -42,16 +47,18 @@ print(data.iloc[0].isnull().any())
 
 #Verificação de linhas com valores nulos 
 for i in range(0, data.shape[1] - 1):
- 	n_miss = data.iloc[i].isnull().sum()
- 	perc = n_miss / data.shape[0] * 100
- 	print('> %d, Missing: %d (%.1f%%)' % (i, n_miss, perc))
+ 	miss_val = data.iloc[i].isnull().sum()
+ 	perc = miss_val / data.shape[0] * 100
+ 	print('> %d, Missing: %d (%.1f%%)' % (i, miss_val, perc))
 
 
 # split data into inputs and outputs
 dados = data.values
-X = dados[:, :-1]
-y = dados[:, -1]
-print(X.shape, y.shape)
+X = dados[:, :-1].astype(str)
+y = dados[:, -1].astype(str)
+# summarize
+print('Input', X.shape)
+print('Output', y.shape)
 
 # define thresholds to check
 thresholds = arange(0.0, 0.60, 0.01)
@@ -117,6 +124,66 @@ cv = KFold(n_splits=3, shuffle=True, random_state=1)
 result = cross_val_score(model, X, y, cv=cv, scoring='accuracy')
 # report the mean performance
 print('Accuracy: %.3f' % result.mean())
+
+
+
+# define min max scaler
+scaler = MinMaxScaler()
+# transform data
+scaled = scaler.fit_transform(data)
+print('Dados escalados de 0 a 1:\n',scaled)
+
+print(data.shape)
+# summarize each variable
+print(data.describe())
+# histograms of the variables
+fig = data.hist(xlabelsize=3, ylabelsize=3)
+[x.title.set_size(3) for x in fig.ravel()]
+# show the plot
+pyplot.show()
+
+
+dadosNorm = data.values[:, :-1]
+print(dadosNorm)
+# perform a robust scaler transform of the dataset
+trans = MinMaxScaler()
+dadosNorm = trans.fit_transform(dadosNorm)
+
+# convert the array back to a dataframe
+data = DataFrame(dadosNorm)
+# summarize
+print(data.describe())
+
+# histograms of the variables
+fig = data.hist(xlabelsize=4, ylabelsize=4)
+[x.title.set_size(4) for x in fig.ravel()]
+# show the plot
+pyplot.show()
+
+# define ordinal encoding
+encoder = OrdinalEncoder()
+# transform data
+result = encoder.fit_transform(data)
+print(result)
+
+# one hot encode input variables
+onehot_encoder = OneHotEncoder(sparse=False)
+X = onehot_encoder.fit_transform(X)
+# ordinal encode target variable
+label_encoder = LabelEncoder()
+y = label_encoder.fit_transform(y)
+# summarize the transformed data
+print('Input', X.shape)
+print(X[:5, :])
+
+last_ix = len(data.columns) - 1
+X, y = data.drop(last_ix, axis=1), data[last_ix]
+print('Info do X',X.info())
+# determine categorical and numerical features
+numerical_ix = X.select_dtypes(include=['int64', 'float64']).columns
+categorical_ix = X.select_dtypes(include=['object', 'bool']).columns
+
+
 
 
 
