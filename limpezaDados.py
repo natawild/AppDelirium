@@ -19,9 +19,26 @@ from pandas import DataFrame
 from sklearn.preprocessing import LabelEncoder
 from sklearn.preprocessing import OrdinalEncoder
 from sklearn.preprocessing import OneHotEncoder
+from sklearn.compose import ColumnTransformer
+from sklearn.svm import SVR
+from sklearn.pipeline import Pipeline
+from sklearn.model_selection import KFold
+from pandas import read_csv
+from pandas import set_option
+import numpy
+from pandas.plotting import scatter_matrix
+from sklearn.preprocessing import Binarizer
 
 # load the dataset
-
+'''
+var = ['Proveniência', 'Local_SU', 'Idade','Genero','Interna_Dias', 'GrupoDiagn', 'SIRS', 'Glicose', 'Sodio', 'Ureia',
+       'Creatinina', 'PCR', 'pH', 'Ca_ionizado', 'pCO2', 'pO2', 'HCO3','Antidislipidemicos', 'Antipsicóticos', 'Antidepressores',
+       'Anti-hipertensores', 'Anti-histaminicos', 'Ansioliticos',
+       'Analgésicos ', 'Anticoagulantes ', 'Corticosteroides',
+       'Antiespasmódicos', 'Antiparkinsónico', 'Cardiotonico', 'Antiacido ',
+       'Geniturinario', 'Obito', 'Alcoolico', 'ResultDelirium']
+     
+'''
 data = pd.read_csv('./dadosDeliriumLimpos.csv', na_values='NA')
 # summarize the number of unique values in each column
 
@@ -33,6 +50,14 @@ dups = data.duplicated()
 print("Duplicados:\n",dups.any())
 print(data[dups])
 # list all duplicate data
+
+# correlation matrix
+fig = pyplot.figure()
+ax = fig.add_subplot(111)
+cax = ax.matshow(data.corr(), vmin=-1, vmax=1, interpolation='none')
+fig.colorbar(cax)
+pyplot.show()
+
 
 
 #Mostra os dados que são únicos 
@@ -59,6 +84,42 @@ y = dados[:, -1].astype(str)
 # summarize
 print('Input', X.shape)
 print('Output', y.shape)
+
+set_option('display.width', 100)
+set_option('precision', 3)
+correlations = data.corr(method='pearson')
+print('Correlações\n',correlations)
+
+# plot correlation matrix
+fig = pyplot.figure()
+ax = fig.add_subplot(111)
+cax = ax.matshow(correlations, vmin=-1, vmax=1)
+fig.colorbar(cax)
+
+scatter_matrix(data)
+pyplot.show()
+
+# plot correlation matrix
+fig = pyplot.figure()
+ax = fig.add_subplot(111)
+cax = ax.matshow(correlations, vmin=-1, vmax=1)
+fig.colorbar(cax)
+ticks = numpy.arange(0,9,1)
+ax.set_xticks(ticks)
+ax.set_yticks(ticks)
+ax.set_xticklabels(names)
+ax.set_yticklabels(names)
+pyplot.show()
+
+
+
+
+
+skew = data.skew()
+print('Skews\n',skew)
+
+data.plot(kind='density', subplots=True, layout=(7,5), sharex=False)
+pyplot.show()
 
 # define thresholds to check
 thresholds = arange(0.0, 0.60, 0.01)
@@ -175,15 +236,6 @@ y = label_encoder.fit_transform(y)
 # summarize the transformed data
 print('Input', X.shape)
 print(X[:5, :])
-
-last_ix = len(data.columns) - 1
-X, y = data.drop(last_ix, axis=1), data[last_ix]
-print('Info do X',X.info())
-# determine categorical and numerical features
-numerical_ix = X.select_dtypes(include=['int64', 'float64']).columns
-categorical_ix = X.select_dtypes(include=['object', 'bool']).columns
-
-
 
 
 

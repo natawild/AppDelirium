@@ -51,13 +51,6 @@ y = dadosDelirium.iloc[:, -1].values
 seed = 50  # so that the result is reproducible
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.333, random_state=seed)
 
-features_to_encode = dadosDelirium.columns[dadosDelirium.dtypes==object].tolist()  
-print("Lista", features_to_encode)
-
-col_trans = make_column_transformer(
-                        (OneHotEncoder(),features_to_encode),
-                        remainder = "passthrough"
-                        )
 
 print("Dentro da col_trans:\n", col_trans)
 
