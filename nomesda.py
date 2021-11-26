@@ -199,6 +199,109 @@ plot_tree(rf_best.estimators_[5], feature_names = X.columns,class_names=['Deliri
 plt.show()
 
 
+plt.rcParams['figure.figsize'] = [20.0, 7.0]
+plt.rcParams.update({'font.size': 22,})
+
+sns.set_palette('viridis')
+sns.set_style('white')
+sns.set_context('talk', font_scale=0.8)
+
+dados= pd.read_csv('./dadosCategoricos.csv')
+dummies = pd.get_dummies(dados)
+print("Dummies:\n",dummies.dtypes)
+
+csvDados = pd.read_csv('./dados.csv')
+#print(csvDados.dtypes)
+print(csvDados.info())
+
+# check for missing values
+def missing_values_table(csvDados):
+        # Total missing values
+        mis_val = csvDados.isnull().sum()
+        print(mis_val)
+        
+        # Percentage of missing values
+        mis_val_percent = 100 * csvDados.isnull().sum() / len(csvDados)
+        
+        # Make a table with the results
+        mis_val_table = pd.concat([mis_val, mis_val_percent], axis=1)
+        
+
+        # Rename the columns
+        mis_val_table_ren_columns = mis_val_table.rename(
+        columns = {0 : 'Missing Values', 1 : '% of Total Values'})
+        
+        # Sort the table by percentage of missing descending
+        mis_val_table_ren_columns = mis_val_table_ren_columns[
+            mis_val_table_ren_columns.iloc[:,1] != 0].sort_values(
+        '% of Total Values', ascending=False).round(1)
+        
+        # Print some summary information
+        print ("O conjunto de dados tem " + str(csvDados.shape[1]) + " colunas.\n"      
+            "Existem " + str(mis_val_table_ren_columns.shape[0]) +
+              " colunas que contém valores omissos")
+        
+        # Return the dataframe with missing information
+        return mis_val_table_ren_columns
+
+print(missing_values_table(csvDados))
+
+
+#A expressão iloc[:, :-1] indica que queremos todas as linhas e todas as colunas exceto a 
+#última ([linhas, colunas]) e 
+#iloc[:, -1] indica que queremos apenas a coluna no ultimo indice.
+X = csvDados.iloc[:, 1:-1].values
+y = csvDados.iloc[:, -1].values
+
+print(X.shape)
+
+fig, ax = plt.subplots()
+
+'''
+# using seaborns countplot to show distribution of questions in dataset
+fig, ax = plt.subplots()
+g = sns.countplot(csvDados, palette='viridis')
+g.set_xticklabels(['0', '1'])
+g.set_yticklabels([])
+'''
+
+# function to show values on bars
+def show_values_on_bars(axs):
+    def _show_on_single_plot(ax):        
+        for p in ax.patches:
+            _x = p.get_x() + p.get_width() / 2
+            _y = p.get_y() + p.get_height()
+            value = '{:.0f}'.format(p.get_height())
+            ax.text(_x, _y, value, ha="center") 
+    if isinstance(axs, np.ndarray):
+        for idx, ax in np.ndenumerate(axs):
+            _show_on_single_plot(ax)
+    else:
+        _show_on_single_plot(axs)
+show_values_on_bars(ax)
+
+sns.despine(left=True, bottom=True)
+plt.xlabel('')
+plt.ylabel('')
+plt.title('Distribution of Target', fontsize=30)
+plt.tick_params(axis='x', which='major', labelsize=15)
+plt.show()
+
+
+
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=45673)
+
+print(csvDados.head())
+
+print("AQUI\n",csvDados.dtypes)
+
+
+
+
+
+
+
 
 
 

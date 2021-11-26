@@ -210,6 +210,7 @@ print(dadosNorm)
 trans = MinMaxScaler()
 dadosNorm = trans.fit_transform(dadosNorm)
 
+
 # convert the array back to a dataframe
 data = DataFrame(dadosNorm)
 # summarize

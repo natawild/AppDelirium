@@ -1,6 +1,7 @@
 from numpy import loadtxt
 from numpy import unique
 import pandas as pd
+import csv 
 from sklearn.feature_selection import VarianceThreshold
 from numpy import arange
 from matplotlib import pyplot
@@ -40,10 +41,8 @@ var = ['Proveniência', 'Local_SU', 'Idade','Genero','Interna_Dias', 'GrupoDiagn
 dadosCategoricos.rename(columns={'Name':'Nome','Idade','Sexo', 'ETC'})
 
 '''
-# types
-pd.set_option('display.max_columns', 500)
 
-dadosCategoricos = pd.read_csv('./dadosCategoricosAgrupados.csv')
+dadosCategoricos = pd.read_csv('./dadosLimposMedAgrupados.csv')
 #print('Onde esta isto?',dadosCategoricos.info())
 #print(dadosCategoricos.head(20))
 #print(dadosCategoricos.keys)
@@ -51,10 +50,9 @@ dadosCategoricos = pd.read_csv('./dadosCategoricosAgrupados.csv')
 #print(dadosCategoricos.describe())
 
 features_to_dummies = dadosCategoricos[['Genero','Antidislipidemicos', 'Antipsicóticos', 'Antidepressores',
-       												'Anti-hipertensores', 'Anti-histaminicos', 'Ansioliticos',
-       												'Analgésicos ', 'Anticoagulantes ', 'Corticosteroides',
-      												'Antiespasmódicos', 'Antiparkinsónico', 'Cardiotonico', 'Antiacido ',
-      												'Geniturinario', 'Obito', 'Alcoolico', 'ResultDelirium']]
+       									'Anti-hipertensores', 'Ansioliticos','Analgésicos', 
+       									'Anticoagulantes', 'Digitalicos','Corticosteroides', 
+       									'Outros Med', 'Obito', 'Alcoolico', 'Delirium']]
 
 
 features_to_one_hot_encoder = dadosCategoricos[['Proveniência', 'Local_SU', 'GrupoDiagn']]
@@ -69,6 +67,12 @@ def encode_and_bind(original_dataframe, feature_to_encode):
     res = res.drop([feature_to_encode], axis=1)
     return(res) 
 
+def encode(original_dataframe, feature_to_encode):
+    dummies = pd.get_dummies(original_dataframe[[feature_to_encode]])
+    res = pd.concat([original_dataframe, dummies], axis=1)
+    res = res.drop([feature_to_encode], axis=1)
+    return(res) 
+
 def normalize_data(original_dataframe, feature_to_encode):
     normalize = MinMaxScaler().fit_transform(original_dataframe[[feature_to_encode]])
     df = pd.DataFrame(normalize, columns=[feature_to_encode])
@@ -78,7 +82,7 @@ def normalize_data(original_dataframe, feature_to_encode):
 
 
 for feature in features_to_one_hot_encoder:
-    dadosCategoricos = encode_and_bind(dadosCategoricos, feature)
+    dadosCategoricos = encode(dadosCategoricos, feature)
 
 for feature in features_to_normalize:
     dadosCategoricos = normalize_data(dadosCategoricos, feature)
@@ -91,18 +95,19 @@ for feature in features_to_dummies:
 
 
 
-dadosCategoricos.rename(columns={'ResultDelirium_Sem delirium':'ResultDelirium'}, inplace=True)
+dadosCategoricos.rename(columns={'Delirium_Sim':'Delirium'}, inplace=True)
 
 print("Desccrição\n",dadosCategoricos.describe())
 # types
 pd.set_option('display.max_columns', 500)
 print("FEATURE\n", dadosCategoricos)
 
+dadosCategoricos.to_csv('dadosAposPreProcessamento.csv')
 
 last_ix = len(dadosCategoricos.columns)-1
 #print(last_ix)
-X = dadosCategoricos.drop(['ResultDelirium'], axis=1)
-y = dadosCategoricos['ResultDelirium']
+X = dadosCategoricos.drop(['Delirium'], axis=1)
+y = dadosCategoricos['Delirium']
 
 #print(X.shape, y.shape)
 # determine categorical and numerical features

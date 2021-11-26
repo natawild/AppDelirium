@@ -24,6 +24,8 @@ from numpy import asarray
 dadosDelirium = pd.read_csv('./dados.csv')
 #print(dadosDelirium.dtypes)
 print(dadosDelirium.info())
+pd.set_option('display.max_columns', 500)
+print(dadosDelirium.describe())
 
 print(dadosDelirium['ResultDelirium'])
 

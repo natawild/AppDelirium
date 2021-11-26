@@ -152,6 +152,4 @@ st.write(prediction)
 
 
 
-print(rf_classifier.feature_importances_)
-print(f" There are {len(rf_classifier.feature_importances_)} features in total")
 
