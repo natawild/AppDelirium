@@ -55,8 +55,10 @@ features_to_dummies = dadosCategoricos[['Genero','Antidislipidemicos', 'Antipsic
        									'Outros Med', 'Obito', 'Alcoolico', 'Delirium']]
 
 
-features_to_one_hot_encoder = dadosCategoricos[['Proveniência', 'Local_SU', 'GrupoDiagn']]
+features_to_one_hot_encoder = dadosCategoricos[['Proveniência', 'GrupoDiagn']]
 
+
+features_to_ordinal_encoder = dadosCategoricos[['Local_SU']]
 
 features_to_normalize = dadosCategoricos[['Idade','Interna_Dias', 'SIRS', 'Glicose', 'Sodio', 'Ureia',
        'Creatinina', 'PCR', 'pH', 'Ca_ionizado', 'pCO2', 'pO2', 'HCO3']]
@@ -73,6 +75,13 @@ def encode(original_dataframe, feature_to_encode):
     res = res.drop([feature_to_encode], axis=1)
     return(res) 
 
+def ordinal_encoder(original_dataframe, feature_to_encode):
+    label_encoder = OrdinalEncoder().fit_transform(original_dataframe[[feature_to_encode]])
+    df = pd.DataFrame(label_encoder, columns=[feature_to_encode])
+    res = original_dataframe.drop([feature_to_encode], axis=1)
+    res = pd.concat([res, df], axis=1)
+    return(res) 
+
 def normalize_data(original_dataframe, feature_to_encode):
     normalize = MinMaxScaler().fit_transform(original_dataframe[[feature_to_encode]])
     df = pd.DataFrame(normalize, columns=[feature_to_encode])
@@ -83,6 +92,10 @@ def normalize_data(original_dataframe, feature_to_encode):
 
 for feature in features_to_one_hot_encoder:
     dadosCategoricos = encode(dadosCategoricos, feature)
+
+for feature in features_to_ordinal_encoder:
+    dadosCategoricos = ordinal_encoder(dadosCategoricos, feature)
+
 
 for feature in features_to_normalize:
     dadosCategoricos = normalize_data(dadosCategoricos, feature)
@@ -97,7 +110,7 @@ for feature in features_to_dummies:
 
 dadosCategoricos.rename(columns={'Delirium_Sim':'Delirium'}, inplace=True)
 
-print("Desccrição\n",dadosCategoricos.describe())
+print("Descrição\n",dadosCategoricos.describe())
 # types
 pd.set_option('display.max_columns', 500)
 print("FEATURE\n", dadosCategoricos)

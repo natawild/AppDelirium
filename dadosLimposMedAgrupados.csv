@@ -73,7 +73,7 @@ Inter-Hospitalar,UCISU,60,Feminino,2,Outro,2,140,146,100,2.35,30,7.362,0.95,27.4
 Inter-Hospitalar,UCISU,42,Feminino,2,Neurologico,3,164,142,4,0.41,14.3,7.478,1.04,36.4,43.2,26.8,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Não,Sim,Não 
 Inter-Hospitalar,UCISU,58,Masculino,2,Genitourinário,4,221,145,63,1.06,384,7.476,1.08,28.5,102.8,23.3,Presente,Ausente,Ausente,Ausente,Presente,Ausente,Presente,Ausente,Ausente,Ausente,Não,Não,Não 
 Inter-Hospitalar,UCISU,41,Masculino,6,Gastrointestinal,2,119,143,26,0.9,170,7.518,1.11,30.1,59.3,23.9,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Não,Não,Sim
-Intra-Hospitalar,UCISU,73,Feminino,2,Toxicidade de Drogas,1,94,146,43,0.7,7.35,7.439,1.15,33.1,42.8,21.9,Ausente,Ausente,Ausente,Ausente,Presente,Ausente,Ausente,Ausente,Ausente,Ausente,Não,Não,Sim
+Intra-Hospitalar,UCISU,73,Feminino,2,Outro,1,94,146,43,0.7,7.35,7.439,1.15,33.1,42.8,21.9,Ausente,Ausente,Ausente,Ausente,Presente,Ausente,Ausente,Ausente,Ausente,Ausente,Não,Não,Sim
 Intra-Hospitalar,UCISU,74,Masculino,2,Respiratório,3,63,137,104,3.2,175,7.458,0.85,30.5,81.1,21.1,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Presente,Ausente,Ausente,Sim,Não,Sim
 Intra-Hospitalar,UCISU,87,Masculino,3,Respiratório,2,235,143,221,4.86,170,7.182,0.97,57.5,39.3,18.2,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Sim,Não,Sim
 Intra-Hospitalar,UCISU,84,Masculino,1,Cardiovascular,3,147,140,60,1.11,96.5,7.461,1.12,44.1,107.5,30,Presente,Ausente,Ausente,Presente,Ausente,Ausente,Presente,Ausente,Ausente,Ausente,Sim,Não,Sim
@@ -85,13 +85,13 @@ Intra-Hospitalar,UCISU,85,Masculino,1,Gastrointestinal,0,115,139,51,0.8,20.1,7.4
 Intra-Hospitalar,UCISU,66,Feminino,1,Cardiovascular,0,159,148,24,0.47,105,7.399,1.02,121.3,121.3,28.2,Ausente,Ausente,Presente,Ausente,Ausente,Ausente,Presente,Ausente,Ausente,Ausente,Não,Não,Sim
 Intra-Hospitalar,UCISU,37,Feminino,4,Outro,1,96,139,24,0.38,119,7.497,0.95,32.5,65.7,24.6,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Não,Não,Sim
 Intra-Hospitalar,UCISU,74,Feminino,2,Outro,1,140,141,92,1.04,132,7.476,1.09,34.2,111.2,24.7,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Não,Não,Sim
-Intra-Hospitalar,UCISU,44,Masculino,1,Toxicidade de Drogas,1,100,138,10,0.53,29.1,7.485,1.12,28.8,85.4,23.7,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Não,Sim,Sim
+Intra-Hospitalar,UCISU,44,Masculino,1,Outro,1,100,138,10,0.53,29.1,7.485,1.12,28.8,85.4,23.7,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Não,Sim,Sim
 Intra-Hospitalar,UCISU,58,Feminino,1,Cardiovascular,0,174,144,67,0.97,4,7.446,1.15,53.7,51.4,33.9,Presente,Ausente,Ausente,Presente,Ausente,Ausente,Ausente,Presente,Ausente,Ausente,Não,Não,Sim
 Intra-Hospitalar,UCISU,73,Feminino,1,Respiratório,2,215,136,78,0.85,50.6,7.467,1,46,108.1,31.8,Ausente,Ausente,Ausente,Presente,Presente,Ausente,Presente,Ausente,Ausente,Ausente,Sim,Não,Sim
 Intra-Hospitalar,UCISU,84,Feminino,1,Gastrointestinal,2,200,148,104,1.2,95.6,7.41,1.36,31,81,29,Presente,Presente,Presente,Ausente,Presente,Ausente,Ausente,Ausente,Ausente,Ausente,Não,Não,Sim
 Intra-Hospitalar,UCISU,68,Feminino,4,Cardiovascular,2,149,145,44,1.16,55.1,7.429,1.15,43.8,65.3,27.4,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Presente,Ausente,Ausente,Ausente,Sim,Não,Sim
 Intra-Hospitalar,UCISU,61,Masculino,2,Musculoesquelético,3,330,133,23,0.53,122,7.505,1,34.1,75.2,27.2,Presente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Não,Não,Sim
-Intra-Hospitalar,UCISU,42,Feminino,5,Toxicidade de Drogas,3,141,142,19,0.47,274,7.442,1.13,37.9,82.3,25.5,Ausente,Presente,Presente,Ausente,Presente,Ausente,Ausente,Ausente,Ausente,Ausente,Não,Não,Sim
+Intra-Hospitalar,UCISU,42,Feminino,5,Outro,3,141,142,19,0.47,274,7.442,1.13,37.9,82.3,25.5,Ausente,Presente,Presente,Ausente,Presente,Ausente,Ausente,Ausente,Ausente,Ausente,Não,Não,Sim
 Intra-Hospitalar,UCISU,70,Feminino,1,Genitourinário,1,163,138,33,1.3,26.4,7.493,0.92,30.2,118,23.8,Presente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Não,Não,Não 
 Intra-Hospitalar,UCISU,77,Masculino,4,Musculoesquelético,2,177,142,64,1.44,133,7.389,1.04,43.1,100,24.8,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Não,Não,Não 
 Intra-Hospitalar,UCISU,57,Masculino,1,Genitourinário,1,170,139,42,0.88,91.2,7.445,1.11,36.5,76.1,25.1,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Não,Não,Não 
@@ -153,7 +153,7 @@ Intra-Hospitalar,UCISU,66,Masculino,2,Cardiovascular,2,126,113,26,0.91,116,7.506
 Intra-Hospitalar,UCISU,73,Feminino,1,Musculoesquelético,2,165,135,30,0.7,19.3,7.409,1.05,42.7,53,26.4,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Não,Não,Não 
 Intra-Hospitalar,UCISU,35,Feminino,12,Gastrointestinal,2,133,139,12,0.35,300,7.53,1,26.4,86,24.2,Ausente,Ausente,Ausente,Ausente,Presente,Ausente,Ausente,Ausente,Ausente,Ausente,Não,Não,Não 
 Intra-Hospitalar,UCISU,76,Masculino,2,Outro,2,143,140,127,2.47,150,7.515,0.94,30.6,97.1,24.1,Ausente,Ausente,Ausente,Presente,Ausente,Ausente,Ausente,Ausente,Presente,Ausente,Não,Sim,Não 
-Intra-Hospitalar,UCISU,52,Feminino,2,Toxicidade de Drogas,2,114,140,38,1.01,108,7.557,1.01,27.2,79.8,23.6,Ausente,Ausente,Presente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Não,Sim,Sim
+Intra-Hospitalar,UCISU,52,Feminino,2,Outro,2,114,140,38,1.01,108,7.557,1.01,27.2,79.8,23.6,Ausente,Ausente,Presente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Não,Sim,Sim
 Intra-Hospitalar,UCISU,61,Masculino,3,Respiratório,2,110,127,218,9.54,300,7.46,0.9,27.2,142.6,18.9,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Sim,Não,Não 
 Intra-Hospitalar,UCISU,78,Masculino,3,Respiratório,3,126,135,51,0.8,164,7.404,1.11,52.6,34.1,32.1,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Sim,Não,Sim
 Intra-Hospitalar,UCISU,95,Masculino,1,Respiratório,3,744,137,196,4,148,7.395,1.01,43.8,64.7,26.2,Ausente,Ausente,Ausente,Presente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Sim,Não,Não 
@@ -165,14 +165,14 @@ Lar,UCISU,62,Masculino,1,Respiratório,2,144,138,40,0.99,39.8,7.419,1.13,54.9,74
 Lar,UCISU,48,Masculino,3,Outro,2,195,130,114,0.92,149,7.457,1.1,35,113.3,30,Presente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Não,Não,Não 
 Casa,UCISU,85,Feminino,3,Genitourinário,1,158,133,129,1.68,60.5,7.453,0.98,29.8,62.9,21,Ausente,Ausente,Ausente,Presente,Ausente,Ausente,Presente,Presente,Presente,Ausente,Sim,Não,Sim
 Casa,UCISU,88,Feminino,2,Respiratório,0,121,145,107,1.48,3.7,7.404,1.23,50.4,95.8,20,Ausente,Ausente,Ausente,Presente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Sim,Não,Não 
-Casa,UCISU,36,Masculino,1,Toxicidade de Drogas,0,83,141,16,0.7,2.9,7.422,1.22,37,79.1,27,Ausente,Presente,Ausente,Ausente,Presente,Ausente,Ausente,Ausente,Ausente,Ausente,Não,Não,Não 
+Casa,UCISU,36,Masculino,1,Outro,0,83,141,16,0.7,2.9,7.422,1.22,37,79.1,27,Ausente,Presente,Ausente,Ausente,Presente,Ausente,Ausente,Ausente,Ausente,Ausente,Não,Não,Não 
 Casa,UCISU,32,Masculino,1,Outro,0,111,136,40,1.35,90.9,7.444,1.11,32.6,104.2,26,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Não,Não,Não 
 Casa,UCISU,78,Masculino,1,Musculoesquelético,0,226,145,49,1.16,62.3,7.416,0.95,33.9,86.8,28,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Sim,Não,Não 
-Casa,UCISU,44,Feminino,1,Toxicidade de Drogas,0,259,141,20,0.44,8.69,7.448,1.11,31.3,96.5,22,Ausente,Presente,Presente,Ausente,Presente,Ausente,Ausente,Ausente,Ausente,Ausente,Não,Não,Não 
+Casa,UCISU,44,Feminino,1,Outro,0,259,141,20,0.44,8.69,7.448,1.11,31.3,96.5,22,Ausente,Presente,Presente,Ausente,Presente,Ausente,Ausente,Ausente,Ausente,Ausente,Não,Não,Não 
 Casa,UCISU,19,Masculino,0.5,Outro,1,53,138,30,0.86,180,7.442,1.12,39.2,107.9,21,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Não,Não,Não 
 Casa,UCISU,59,Masculino,1,Gastrointestinal,1,148,138,46,0.8,11.7,7.518,1.07,29,78.2,20,Presente,Ausente,Ausente,Ausente,Presente,Ausente,Ausente,Ausente,Ausente,Ausente,Não,Não,Não 
 Casa,UCISU,87,Feminino,3,Genitourinário,1,196,129,242,5.13,10.9,7.375,1.22,26.9,85,23,Ausente,Ausente,Ausente,Presente,Ausente,Ausente,Presente,Ausente,Ausente,Ausente,Sim,Não,Não 
-Casa,UCISU,62,Feminino,1,Toxicidade de Drogas,2,271,141,28,0.53,42.3,7.453,1.07,39.5,79.1,25,Ausente,Presente,Presente,Ausente,Presente,Ausente,Ausente,Ausente,Ausente,Ausente,Não,Não,Não 
+Casa,UCISU,62,Feminino,1,Outro,2,271,141,28,0.53,42.3,7.453,1.07,39.5,79.1,25,Ausente,Presente,Presente,Ausente,Presente,Ausente,Ausente,Ausente,Ausente,Ausente,Não,Não,Não 
 Casa,UCISU,40,Masculino,6,Cardiovascular,2,105,142,43,0.9,78.6,7.46,1.05,34.4,75.7,27,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Não,Não,Não 
 Casa,UCISU,23,Feminino,4,Outro,2,168,146,27,0.69,41.6,7.321,1.09,28.5,109.7,24,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Não,Não,Não 
 Intra-Hospitalar,UDC2,85,Feminino,0.917,Respiratório,1,155,140,63,0.8,86,7.362,1.11,60.5,39.3,26,Presente,Ausente,Ausente,Presente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Não,Não,Sim
@@ -289,7 +289,7 @@ Casa,UDC2,71,Masculino,0.5,Hemato-Oncológico,1,102,140,37,1.1,89.1,7.39,1.04,39
 Casa,UDC2,76,Feminino,0.833,Gastrointestinal,1,169,133,89,1,148,7.41,0.91,32.5,89,25,Presente,Ausente,Ausente,Ausente,Presente,Ausente,Ausente,Ausente,Ausente,Ausente,Não,Não,Não 
 Casa,UDC2,84,Feminino,1,Neurologico,1,173,143,98,1.9,27,7.41,1.04,37.5,84,27,Ausente,Ausente,Ausente,Ausente,Presente,Ausente,Presente,Ausente,Ausente,Ausente,Não,Não,Sim
 Casa,UDC2,81,Masculino,0.417,Respiratório,1,147,141,55,1.1,4.44,7.39,1.06,35.9,52,24,Presente,Ausente,Ausente,Ausente,Presente,Ausente,Ausente,Ausente,Ausente,Ausente,Sim,Não,Não 
-Casa,UDC2,39,Masculino,0.667,Toxicidade de Drogas,1,84,141,38,1.1,2.9,7.41,1.12,37.1,178.1,26,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Não,Não,Não 
+Casa,UDC2,39,Masculino,0.667,Outro,1,84,141,38,1.1,2.9,7.41,1.12,37.1,178.1,26,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Não,Não,Não 
 Casa,UDC2,45,Feminino,0.5,Gastrointestinal,1,164,129,159,1.8,220,7.353,1.11,32.8,71.4,28,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Presente,Ausente,Ausente,Não,Não,Não 
 Casa,UDC2,77,Feminino,0.333,Hemato-Oncológico,0,118,140,115,1.6,2.93,7.45,1.17,44,78,29,Presente,Ausente,Ausente,Presente,Ausente,Ausente,Presente,Ausente,Presente,Ausente,Não,Não,Não 
 Casa,UDC2,70,Masculino,0.5,Cardiovascular,0,102,141,26,1.2,2.9,7.44,1.29,35,98,21,Ausente,Ausente,Ausente,Ausente,Presente,Ausente,Ausente,Ausente,Ausente,Ausente,Não,Não,Não 
@@ -419,7 +419,7 @@ Casa,UDC1,23,Feminino,0.25,Neurologico,0,86,140,35,0.7,2.9,7.41,1.25,42,97,28,Au
 Casa,UDC1,18,Masculino,0.25,Neurologico,0,101,143,42,0.3,2.9,7.41,1.26,43,89,29,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Não,Não,Não 
 Casa,UDC1,82,Masculino,0.667,Genitourinário,0,110,136,53,0.2,2.9,7.39,1.29,44,84,24,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Sim,Não,Não 
 Casa,UDC1,71,Feminino,0.5,Neurologico,0,92,130,24,0.2,7.27,7.45,1.3,34,100,21,Presente,Ausente,Ausente,Ausente,Presente,Ausente,Ausente,Ausente,Ausente,Ausente,Não,Não,Não 
-Casa,UDC1,31,Feminino,0.5,Toxicidade de Drogas,0,79,138,24,0.7,2.9,7.35,1.09,42.6,101,20,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Não,Não,Não 
+Casa,UDC1,31,Feminino,0.5,Outro,0,79,138,24,0.7,2.9,7.35,1.09,42.6,101,20,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Não,Não,Não 
 Casa,UDC1,20,Feminino,0.417,Neurologico,1,116,139,29,1,4.56,7.43,1.35,33,105,27,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Não,Não,Não 
 Casa,UDC1,46,Masculino,0.333,Neurologico,1,112,137,52,0.8,2.9,7.44,1.15,35,73,26,Presente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Não,Não,Não 
 Casa,UDC1,50,Masculino,0.333,Cardiovascular,1,91,140,39,0.7,6.6,7.44,1.16,36,79,28,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Ausente,Não,Não,Não 
