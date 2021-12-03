@@ -27,6 +27,10 @@ from numpy import mean
 from sklearn.preprocessing import Binarizer
 from sklearn.preprocessing import MultiLabelBinarizer
 from sklearn.metrics import classification_report
+from sklearn.feature_selection import SelectKBest
+from sklearn.feature_selection import f_classif
+from feature_selection_anova import select_features, select_k_features, print_select_k_features
+from sklearn.feature_selection import SelectKBest
 
 '''
 var = ['Proveniência', 'Local_SU', 'Idade','Genero','Interna_Dias', 'GrupoDiagn', 'SIRS', 'Glicose', 'Sodio', 'Ureia',
@@ -52,7 +56,7 @@ dadosCategoricos = pd.read_csv('./dadosLimposMedAgrupados.csv')
 features_to_dummies = dadosCategoricos[['Genero','Antidislipidemicos', 'Antipsicóticos', 'Antidepressores',
        									'Anti-hipertensores', 'Ansioliticos','Analgésicos', 
        									'Anticoagulantes', 'Digitalicos','Corticosteroides', 
-       									'Outros Med', 'Obito', 'Alcoolico', 'Delirium']]
+       									'Outros Med', 'Alcoolico', 'Delirium']]
 
 
 features_to_one_hot_encoder = dadosCategoricos[['Proveniência', 'GrupoDiagn']]
@@ -106,8 +110,6 @@ for feature in features_to_dummies:
 
 
 
-
-
 dadosCategoricos.rename(columns={'Delirium_Sim':'Delirium'}, inplace=True)
 
 print("Descrição\n",dadosCategoricos.describe())
@@ -131,10 +133,38 @@ y = dadosCategoricos['Delirium']
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=1)
 
-
+#Logistic Regression with all columns
 model = LogisticRegression(solver='lbfgs', max_iter=1000)
 model.fit(X_train, y_train)
 predicted = model.predict(X_test)
+report = classification_report(y_test, predicted)
+print(report)
+
+#FInd the feature with best accuracy
+results = select_k_features(X_train, y_train)
+print('Best Mean Accuracy: %.3f' % results.best_score_)
+print('Best Config: %s' % results.best_params_)
+
+# Cliclo pra ver os resultados de cada k
+# define number of features to evaluate
+# num_features = [i+1 for i in range(X.shape[1])]
+# enumerate each number of features
+#for k in num_features:
+#    print_select_k_features(X_train, y_train, k)
+
+k = results.best_params_['anova__k']
+#k = 4
+
+X_train_fs, X_test_fs, fs, cols_indexs = select_features(X_train, y_train, X_test, k)
+
+# New dataframe with only the selected features
+#X_new = X.iloc[:,cols_indexs]
+#print(X_new)
+
+
+model = LogisticRegression(solver='lbfgs', max_iter=1000)
+model.fit(X_train_fs, y_train)
+predicted = model.predict(X_test_fs)
 report = classification_report(y_test, predicted)
 print(report)
 
