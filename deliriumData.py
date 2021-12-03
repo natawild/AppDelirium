@@ -20,7 +20,7 @@ import missingno as msno
 
 
 # Loading dataset
-deliriumData = pd.read_csv('./DadosDelirium.csv')
+deliriumData = pd.read_csv('./dados_apos_p_processamento.csv')
 
 # Viewing data
 deliriumData.head()
@@ -34,8 +34,8 @@ print(deliriumData.Glicose)
 #y = deliriumData.target
 
 #TEST.CSV 
-X = deliriumData.drop('ResultDelirium',axis=1)
-y = deliriumData['ResultDelirium']
+X = deliriumData.drop('Delirium',axis=1)
+y = deliriumData['Delirium']
 
 print('aqui vai o X', X.head())
 print('aqui vai o y', y.head())
