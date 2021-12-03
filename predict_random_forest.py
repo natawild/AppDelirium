@@ -7,35 +7,27 @@ from sklearn.model_selection import RandomizedSearchCV
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from imblearn.under_sampling import RandomUnderSampler, NearMiss, OneSidedSelection
-
 from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier
 from mlxtend.feature_selection import SequentialFeatureSelector as SFS 
 from sklearn.metrics import roc_auc_score 
-
 from sklearn.metrics import accuracy_score
-
 from mlxtend.plotting import plot_sequential_feature_selection as plot_sfs
 from sklearn.tree import plot_tree
 import category_encoders as ce
 import matplotlib.pyplot as plt
 from sklearn.pipeline import make_pipeline
-
 from sklearn.model_selection import train_test_split
-
 from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier
-
 from sklearn.metrics import accuracy_score, confusion_matrix, precision_score, recall_score, roc_auc_score, roc_curve, f1_score
-
 from sklearn.preprocessing import LabelEncoder,OneHotEncoder
 from sklearn.preprocessing import label_binarize
-
 from sklearn.compose import make_column_transformer
-
 from numpy import asarray
-
 import missingno as msno
+import itertools
+from pprint import pprint
 
 
 # Loading dataset
@@ -116,28 +108,7 @@ def evaluate_model(y_pred, probs,train_predictions, train_probs):
     plt.show();
 
 
-x = evaluate_model(y_pred,probs,train_predictions,train_probs)
 
-
-
-n_estimators = [int(x) for x in np.linspace(start = 5, stop = 100, num = 10)]
-max_features = ['auto', 'log2']  # Number of features to consider at every split
-max_depth = [int(x) for x in np.linspace(10, 110, num = 11)]   # Maximum number of levels in tree
-max_depth.append(None)
-min_samples_split = [2, 5, 10]  # Minimum number of samples required to split a node
-min_samples_leaf = [1, 4, 10]    # Minimum number of samples required at each leaf node
-bootstrap = [True, False]       # Method of selecting samples for training each tree
-random_grid = {'n_estimators': n_estimators,
-               'max_features': max_features,
-               'max_depth': max_depth,
-               'min_samples_split': min_samples_split,
-               'min_samples_leaf': min_samples_leaf,
-               'max_leaf_nodes': [None] + list(np.linspace(10, 50, 500).astype(int)),
-               'bootstrap': bootstrap}
-
-print('qqqqqqqqqqqqqqqqqqqqq\n', x)
-
-import itertools
 
 def plot_confusion_matrix(cm, classes, normalize = False,
                           title='Confusion matrix',
@@ -170,57 +141,37 @@ plt.show()
 
 
 
-# Create base model to tune
-rf = RandomForestClassifier(oob_score=True)
-# Create random search model and fit the data
-rf_random = RandomizedSearchCV(
-                        estimator = rf,
-                        param_distributions = random_grid,
-                        n_iter = 100, 
-                        cv = 3,
-                        verbose=2, random_state=seed, 
-                        scoring='roc_auc')
-
-rf_random.fit(X_train, y_train)
-rf_random.best_params_
-
-print('BEEEST PARAMS;',rf_random.best_params_)
-
-
-
 print(rf_classifier.feature_importances_)
 print(f"There are {len(rf_classifier.feature_importances_)} features in total")
 
 feature_importances = list(zip(X_train, rf_classifier.feature_importances_))
 print("Aqui as variáveis importantes:\n",feature_importances)
 # Then sort the feature importances by most important first
-feature_importances_ranked = sorted(feature_importances, reverse = True)
-print("Que será isto? ",feature_importances_ranked)
+feature_importances_ranked = sorted(feature_importances, key = lambda x: x[1], reverse = True)
 
 # Print out the feature and importances
-print("AAAAAAAAA, ",feature_importances_ranked)
 [print('Feature: {:38} Importance: ', pair) for pair in feature_importances_ranked];
 
-# Plot the top 25 feature importance
-feature_names_25 = [i[0] for i in feature_importances_ranked[:25]]
-y_ticks = np.arange(0, len(feature_names_25))
-x_axis = [i[1] for i in feature_importances_ranked[:25]]
+# Plot the top 20 feature importance
+feature_names_20 = [i[0] for i in feature_importances_ranked[:20]]
+y_ticks = np.arange(0, len(feature_names_20))
+x_axis = [i[1] for i in feature_importances_ranked[:20]]
 plt.figure(figsize = (10, 14))
-plt.barh(feature_names_25, x_axis)   #horizontal barplot
-plt.title('Random Forest Feature Importance (Top 25)',
+plt.barh(feature_names_20, x_axis)   #horizontal barplot
+plt.title('Random Forest Feature Importance (Top 20)',
           fontdict= {'fontname':'Comic Sans MS','fontsize' : 20})
 #plt.ylabel('Features',fontdict= {'fontsize' : 16})
-plt.xlabel('Importance',fontdict= {'fontsize' : 16})
+plt.xlabel('Importance',fontdict= {'fontsize' : 12})
 plt.show()
 
-from pprint import pprint
+# Tune the hyperparameters with RandomSearchCV
+
 print('Parameters currently in use:\n')
 pprint(rf_classifier.get_params())
 
+# create a grid of parameters for the model to randomly pick and train, hence the name Random Search
 
-
-
-n_estimators = [int(x) for x in np.linspace(start = 10, stop = 700, num = 50)]
+n_estimators = [int(x) for x in np.linspace(start = 10, stop = 200, num = 50)]
 max_features = ['auto', 'log2']  # Number of features to consider at every split
 max_depth = [int(x) for x in np.linspace(10, 110, num = 11)]   # Maximum number of levels in tree
 max_depth.append(None)
@@ -235,14 +186,69 @@ random_grid = {'n_estimators': n_estimators,
                'max_leaf_nodes': [None] + list(np.linspace(10, 50, 500).astype(int)),
                'bootstrap': bootstrap}
 
+rf = RandomForestClassifier(oob_score=True)
+rf_random = RandomizedSearchCV(
+                        estimator = rf,
+                        param_distributions = random_grid,
+                        n_iter = 10, 
+                        cv = 3,
+                        verbose=2, random_state=seed, 
+                        scoring='roc_auc')
+
+rf_random.fit(X_train, y_train)
+best_params = rf_random.best_params_
+print('Best Params\n')
+pprint(best_params)
+best_model = rf_random.best_estimator_
+print(best_params['max_leaf_nodes'])
+rf_test = RandomForestClassifier(
+                      min_samples_leaf=best_params['min_samples_leaf'],
+                      max_leaf_nodes=best_params['max_leaf_nodes'],
+                      n_estimators=best_params['n_estimators'],
+                      bootstrap=best_params['bootstrap'],
+                      max_depth=best_params['max_depth'],
+                      min_samples_split=best_params['min_samples_split'],
+                      max_features=best_params['max_features'])
+rf_test.fit(X_train, y_train)
+
+y_pred = rf_test.predict(X_test)
+train_rf_predictions = rf_test.predict(X_train)
+
+print('BBB\n')
+pprint(y_pred)
+
+train_rf_probs = rf_test.predict_proba(X_train)[:, 1]
+rf_probs = rf_test.predict_proba(X_test)[:, 1]
+# Plot ROC curve and check scores
+evaluate_model(y_pred, rf_probs, train_rf_predictions, train_rf_probs)
+
+plot_confusion_matrix(confusion_matrix(y_test, y_pred), classes = ['0 - Nao', '1 - Sim'],
+title = 'Delirium Confusion Matrix')
+plt.show()
+
+'''
+n_nodes = []
+max_depths = []
+for ind_tree in best_model.estimators_:
+       n_nodes.append(ind_tree.tree_.node_count)
+       max_depths.append(ind_tree.tree_.max_depth)
+print(f'Average number of nodes {int(np.mean(n_nodes))}') 
+print(f'Average maximum depth {int(np.mean(max_depths))}')  
+
+# Use the best model after tuning
+pipe_best_model = make_pipeline(X_test, best_model)
+pipe_best_model.fit(X_train, y_train)
+y_pred_best_model = pipe_best_model.predict(X_test)
+
 
 # Create base model to tune
 rf = RandomForestClassifier(oob_score=True)
+
 # Create random search model and fit the data
 rf_random = RandomizedSearchCV(
                         estimator = rf,
                         param_distributions = random_grid,
-                        n_iter = 100, 
+                        n_iter = 10, 
                         cv = 3,
                         verbose=2, random_state=seed, 
                         scoring='roc_auc')
@@ -250,7 +256,15 @@ rf_random = RandomizedSearchCV(
 rf_random.fit(X_train, y_train)
 rf_random.best_params_
 
-print('BEEEST PARAMS;',rf_random.best_params_)
+
+#Use the best model after tuning
+best_model = rf_random.best_estimator_
+print('BEST ', best_model)
+pipe_best_model = make_pipeline(X_train, best_model)
+pipe_best_model.fit(X_train, y_train)
+y_pred_best_model = pipe_best_model.predict(X_test)
+
+
 
 
 # To look at nodes and depths of trees use on average
@@ -261,12 +275,6 @@ for ind_tree in best_model.estimators_:
        max_depths.append(ind_tree.tree_.max_depth)
 print(f'Average number of nodes {int(np.mean(n_nodes))}')   
 print(f'Average maximum depth {int(np.mean(max_depths))}')  
-
-# Use the best model after tuning
-best_model = rf_random.best_estimator_
-pipe_best_model = make_pipeline(col_trans, best_model)
-pipe_best_model.fit(X_train, y_train)
-y_pred_best_model = pipe_best_model.predict(X_test)
 
 
 
@@ -281,6 +289,6 @@ evaluate_model(y_pred_best_model, rf_probs, train_rf_predictions, train_rf_probs
 plot_confusion_matrix(confusion_matrix(y_test, y_pred_best_model), classes = ['0 - Sem delirium', '1 - Delirium'],
 title = 'Exit_status Confusion Matrix___ ou este ')
 
-
+'''
 
 
