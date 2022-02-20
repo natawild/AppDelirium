@@ -1,7 +1,6 @@
 import streamlit as st
 import numpy as np
 import pandas as pd
-import category_encoders as ce
 
 # importing OneHotEncoder
 from sklearn.preprocessing import OneHotEncoder
@@ -48,6 +47,8 @@ fcol1, fcol2, fcol3 = filters_container.columns(3)
 fcol1.subheader("A wide column with a chart")
 fcol2.subheader("A wide column with a chart")
 fcol3.subheader("A wide column with a chart")
+
+
 
 
 '''
