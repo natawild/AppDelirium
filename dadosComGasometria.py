@@ -24,6 +24,7 @@ def convertGenderToInt(variavel):
     return 1
 
 
+
 def get_user_input_with_gasome(fcol1, fcol2, fcol3):
     proveniencia = fcol1.slider("Proveniencia", 0, 5, 1)
     idade = fcol2.slider("Idade", 18, 120, 1)
