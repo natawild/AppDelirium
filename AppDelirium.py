@@ -1,32 +1,18 @@
 import streamlit as st
 import numpy as np
 import pandas as pd
-
-# importing OneHotEncoder
-from sklearn.preprocessing import OneHotEncoder
-
-import matplotlib.pyplot as plt
-from sklearn.model_selection import train_test_split
-
 from sklearn.linear_model import LogisticRegression
-from sklearn.ensemble import RandomForestClassifier
-
-from sklearn.metrics import accuracy_score
-
-from dadosSemGasometria import get_user_input_without_gasome
 from dadosComGasometria import get_user_input_with_gasome
-
 import joblib
-
 
 #Page headers
 st.set_page_config(
     page_title='Delirium Detection', 
     page_icon=None, 
     layout="wide", 
-    initial_sidebar_state="expanded", 
+    initial_sidebar_state="collapsed", 
     menu_items=None
-    )
+)
 
 #Page Title
 st.title('Delirium Detection')
@@ -37,19 +23,25 @@ clf = joblib.load('final_model.sav')
 
 #Criacao de um título e subtitulo
 st.write("""
-#Delirium Detection
-Detect if someone has delirium using machine learning and python !
+App Delirium
+predict if someone has delirium using machine learning and python !
 """)
 
 filters_container = st.container()
 
+filters_container.subheader("Formulario")
+filters_container.write("Por favor preencha dos dados a baixo para poder efectuar uma previsão de delirium")
 fcol1, fcol2, fcol3 = filters_container.columns(3)
-fcol1.subheader("A wide column with a chart")
-fcol2.subheader("A wide column with a chart")
-fcol3.subheader("A wide column with a chart")
+#antidislipidemicos = fcol1.multiselect(
+#    'Antidislipidemicos',
+#    ['Rosuvastatina', 'Atorvastatina', 'Pravastatina', 'Sinvastatina', 'Fluvastatina'],
+#    default=None,
+#    help="HEP_TEXT"
+#),
 
-
-
+#fcol1.subheader("A wide column with a chart")
+#fcol2.subheader("A wide column with a chart")
+#fcol3.subheader("A wide column with a chart")
 
 '''
 #Dados
@@ -81,7 +73,7 @@ classifier_name = st.sidebar.selectbox(
 
 # guardar o input do utilizador numa variavel
 
-user_input = get_user_input_with_gasome()
+user_input = get_user_input_with_gasome(fcol1, fcol2, fcol3)
 
 # Configurar uma subhead e mostrar aos utilizadores input
 st.subheader('User Input:')

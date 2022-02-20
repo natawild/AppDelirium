@@ -24,67 +24,65 @@ def convertGenderToInt(variavel):
     return 1
 
 
-def get_user_input_with_gasome():
-    proveniencia = st.sidebar.slider("Proveniencia", 0, 5, 1)
-    idade = st.sidebar.slider("Idade", 18, 120, 1)
-    gender = st.sidebar.radio("Selecione o sexo:", ("Masculino", "Feminino"))
-    tempo = st.sidebar.slider("Tempo em horas", 0, 15, 1)
-    glicose = st.sidebar.slider("glicose", 20, 1000, 1)
-    sodio = st.sidebar.slider("sodio", 100, 170, 1)
-    ureia = st.sidebar.slider("ureia", 1, 280, 1)
-    creatinina = st.sidebar.slider(
+def get_user_input_with_gasome(fcol1, fcol2, fcol3):
+    proveniencia = fcol1.slider("Proveniencia", 0, 5, 1)
+    idade = fcol2.slider("Idade", 18, 120, 1)
+    gender = fcol3.radio("Selecione o sexo:", ("Masculino", "Feminino"))
+    tempo = fcol1.slider("Tempo em horas", 0, 15, 1)
+    glicose = fcol2.slider("glicose", 20, 1000, 1)
+    sodio = fcol3.slider("sodio", 100, 170, 1)
+    ureia = fcol1.slider("ureia", 1, 280, 1)
+    creatinina = fcol2.slider(
         "creatinina", min_value=0.10, max_value=20.00, step=0.01
     )
-    pcr = st.sidebar.slider("pcr", min_value=2.90, max_value=500.00, step=0.01)
-    ph = st.sidebar.slider("ph", min_value=7.011, max_value=7.779, step=0.001)
-    ca = st.sidebar.slider("ca", min_value=0.50, max_value=1.40, step=0.01)
-    co2 = st.sidebar.slider("co2", min_value=10.00, max_value=130.00, step=0.01)
-    o2 = st.sidebar.slider("o2", min_value=30.00, max_value=180.00, step=0.01)
-    hco3 = st.sidebar.slider("hco3", min_value=3.00, max_value=48.00, step=0.01)
-    antidislipidemicos = st.sidebar.multiselect(
+    pcr = fcol3.slider("pcr", min_value=2.90, max_value=500.00, step=0.01)
+    ph = fcol1.slider("ph", min_value=7.011, max_value=7.779, step=0.001)
+    ca = fcol2.slider("ca", min_value=0.50, max_value=1.40, step=0.01)
+    co2 = fcol3.slider("co2", min_value=10.00, max_value=130.00, step=0.01)
+    o2 = fcol1.slider("o2", min_value=30.00, max_value=180.00, step=0.01)
+    hco3 = fcol2.slider("hco3", min_value=3.00, max_value=48.00, step=0.01)
+    antidislipidemicos = fcol3.multiselect(
         'Antidislipidemicos',
         ['Rosuvastatina', 'Atorvastatina', 'Pravastatina', 'Sinvastatina', 'Fluvastatina'],
         default=None,
         help="HEP_TEXT"
     ),
-
-
-    alprazolam = st.sidebar.checkbox("Alprazolam")
-    captopril = st.sidebar.checkbox("Captopril")
-    codeine = st.sidebar.checkbox("Codeine")
-    desloratadine = st.sidebar.checkbox("Desloratadine")
-    diazepam = st.sidebar.checkbox("Diazepam", help="Unisedil, Valium")
-    lorazepam = st.sidebar.checkbox("Lorazepam")
-    digoxin = st.sidebar.checkbox("Digoxin")
-    dipyridamole = st.sidebar.checkbox("Dipyridamole")
-    furosemide = st.sidebar.checkbox("Furosemide")
-    fluvoxamine = st.sidebar.checkbox("Fluvoxamine")
-    haloperidol = st.sidebar.checkbox("Haloperidol", help="Haldol")
-    hydrocortisone = st.sidebar.checkbox("Hydrocortisone")
-    iloperidone = st.sidebar.checkbox("Iloperidone")
-    morphine = st.sidebar.checkbox("Morphine")
-    nifedipine = st.sidebar.checkbox("Nifedipine")
-    paliperidone = st.sidebar.checkbox("Paliperidone")
-    prednisone = st.sidebar.checkbox("Prednisone")
-    ranitidine = st.sidebar.checkbox("Ranitidine")
-    risperidone = st.sidebar.checkbox("Risperidone")
-    trazodone = st.sidebar.checkbox("Trazodone", help="Triticum")
-    venlafaxine = st.sidebar.checkbox("Venlafaxine")
-    warfarin = st.sidebar.checkbox("Warfarin")
-    amitriptyline = st.sidebar.checkbox("Amitriptyline")
-    hydroxyzine = st.sidebar.checkbox("Hydroxyzine")
-    paroxetine = st.sidebar.checkbox(
+    alprazolam = fcol1.checkbox("Alprazolam")
+    captopril = fcol2.checkbox("Captopril")
+    codeine = fcol3.checkbox("Codeine")
+    desloratadine = fcol1.checkbox("Desloratadine")
+    diazepam = fcol2.checkbox("Diazepam", help="Unisedil, Valium")
+    lorazepam = fcol3.checkbox("Lorazepam")
+    digoxin = fcol1.checkbox("Digoxin")
+    dipyridamole = fcol2.checkbox("Dipyridamole")
+    furosemide = fcol3.checkbox("Furosemide")
+    fluvoxamine = fcol1.checkbox("Fluvoxamine")
+    haloperidol = fcol2.checkbox("Haloperidol", help="Haldol")
+    hydrocortisone = fcol3.checkbox("Hydrocortisone")
+    iloperidone = fcol1.checkbox("Iloperidone")
+    morphine = fcol2.checkbox("Morphine")
+    nifedipine = fcol3.checkbox("Nifedipine")
+    paliperidone = fcol1.checkbox("Paliperidone")
+    prednisone = fcol2.checkbox("Prednisone")
+    ranitidine = fcol3.checkbox("Ranitidine")
+    risperidone = fcol1.checkbox("Risperidone")
+    trazodone = fcol2.checkbox("Trazodone", help="Triticum")
+    venlafaxine = fcol3.checkbox("Venlafaxine")
+    warfarin = fcol1.checkbox("Warfarin")
+    amitriptyline = fcol2.checkbox("Amitriptyline")
+    hydroxyzine = fcol3.checkbox("Hydroxyzine")
+    paroxetine = fcol1.checkbox(
         "Paroxetine", help="Seroxat, Paxetil, Calmus, Denerval e Oxepar"
     )
-    quetiapine = st.sidebar.checkbox("Quetiapine")
-    scopolamine = st.sidebar.checkbox("Scopolamine", help="Buscopan")
-    trihexyphenidyl = st.sidebar.checkbox("Trihexyphenidyl")
-    clonidine = st.sidebar.checkbox("Clonidine")
-    sertralina = st.sidebar.checkbox("Sertralina")
-    tramadol = st.sidebar.checkbox("Tramadol")
-    mexazolam = st.sidebar.checkbox("Mexazolam", help="Sedoxil")
-    trospium = st.sidebar.checkbox("Trospium")
-    alcoolico = st.sidebar.slider("Alcoolico", 0, 1, 0)
+    quetiapine = fcol2.checkbox("Quetiapine")
+    scopolamine = fcol3.checkbox("Scopolamine", help="Buscopan")
+    trihexyphenidyl = fcol1.checkbox("Trihexyphenidyl")
+    clonidine = fcol2.checkbox("Clonidine")
+    sertralina = fcol3.checkbox("Sertralina")
+    tramadol = fcol1.checkbox("Tramadol")
+    mexazolam = fcol2.checkbox("Mexazolam", help="Sedoxil")
+    trospium = fcol3.checkbox("Trospium")
+    alcoolico = fcol1.slider("Alcoolico", 0, 1, 0)
 
     # Guardar o dicionário numa variável
     user_data = {
