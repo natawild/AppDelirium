@@ -17,80 +17,130 @@ def convertCheckboxToInt(variavel):
     return 0
 
 
-# TODO: confirmar valores a baixo
-def convertGenderToInt(variavel):
-    if variavel == "Masculino":
+def convertMultiSelect(values):
+    if values.any() == False:
         return 0
     return 1
+
+'''
+def convertMultiSelect(medi):
+    if not medi: 
+        res = 0
+        print(res)
+    else:
+        res=1
+        print(res)
+'''
+
+def convertGenderToInt(variavel):
+    if variavel[0] == "Masculino":
+        return 1
+    return 0
+
+
+def convertAlcool(variavel):
+    if variavel[0] == "Sim":
+        return 1
+    return 0
+
+
+def normalize(value, min, max):
+    normalized = (value[0] - min) / (max - min)
+    return normalized
+
+    
+#value = switcher.get(proveniencia, 0)
 
 
 
 def get_user_input_with_gasome(fcol1, fcol2, fcol3):
-    proveniencia = fcol1.slider("Proveniencia", 0, 5, 1)
-    idade = fcol2.slider("Idade", 18, 120, 1)
-    gender = fcol3.radio("Selecione o sexo:", ("Masculino", "Feminino"))
-    tempo = fcol1.slider("Tempo em horas", 0, 15, 1)
-    glicose = fcol2.slider("glicose", 20, 1000, 1)
-    sodio = fcol3.slider("sodio", 100, 170, 1)
-    ureia = fcol1.slider("ureia", 1, 280, 1)
-    creatinina = fcol2.slider(
-        "creatinina", min_value=0.10, max_value=20.00, step=0.01
+    
+    proveniencia = fcol3.selectbox("Proveniencia", ("Casa", "Inter-Hospitalar", "Intra-Hospitalar", "Lar"))
+    grupoDiagnostico = fcol1.selectbox("Grupo de Diagnóstico", ("Hemato-Oncologico","Neurologico","Respiratorio","Cardiovascular","Musculo-esqueletico","Geniturinário","Gastrointestinal","Outro"))
+    localSU = fcol1.selectbox("Proveniencia do doente",("AMBUL","UCISU","UDC1","UDC2"))
+    idade = fcol1.slider("Idade", min_value=18, max_value=100, step=1)
+    gender = fcol2.radio("Selecione o sexo:", ("Masculino", "Feminino"))
+    tempo = fcol1.slider("Tempo em dias", min_value=0.00, max_value=15.0, step=0.01)
+    sirs = fcol2.slider("Critérios SIRS:",min_value=0, max_value=4, step=1)
+    glicose = fcol2.number_input("glicose", min_value=41.0, max_value=1000.0, step=0.01)
+    sodio = fcol2.number_input("sodio", min_value=42.0, max_value=151.0, step=0.01)
+    ureia = fcol2.number_input("ureia", min_value=4.0, max_value=275.0, step=0.01)
+    creatinina = fcol2.number_input(
+        "creatinina", min_value=0.1, max_value=19.5, step=0.01
     )
-    pcr = fcol3.slider("pcr", min_value=2.90, max_value=500.00, step=0.01)
-    ph = fcol1.slider("ph", min_value=7.011, max_value=7.779, step=0.001)
-    ca = fcol2.slider("ca", min_value=0.50, max_value=1.40, step=0.01)
-    co2 = fcol3.slider("co2", min_value=10.00, max_value=130.00, step=0.01)
-    o2 = fcol1.slider("o2", min_value=30.00, max_value=180.00, step=0.01)
-    hco3 = fcol2.slider("hco3", min_value=3.00, max_value=48.00, step=0.01)
+    pcr = fcol3.number_input("pcr", min_value=2.90, max_value=499.00, step=0.01)
+    ph = fcol1.number_input("ph", min_value=7.026, max_value=7.625, step=0.001)
+    ca = fcol2.number_input("ca", min_value=0.84, max_value=1.37, step=0.01)
+    co2 = fcol3.number_input("co2", min_value=13.2, max_value=121.3, step=0.01)
+    o2 = fcol1.number_input("o2", min_value=34.1, max_value=178.1, step=0.01)
+    hco3 = fcol2.number_input("hco3", min_value=7.40, max_value=39.1, step=0.01)
+
     antidislipidemicos = fcol3.multiselect(
         'Antidislipidemicos',
         ['Rosuvastatina', 'Atorvastatina', 'Pravastatina', 'Sinvastatina', 'Fluvastatina'],
         default=None,
         help="HEP_TEXT"
     ),
-    alprazolam = fcol1.checkbox("Alprazolam")
-    captopril = fcol2.checkbox("Captopril")
-    codeine = fcol3.checkbox("Codeine")
-    desloratadine = fcol1.checkbox("Desloratadine")
-    diazepam = fcol2.checkbox("Diazepam", help="Unisedil, Valium")
-    lorazepam = fcol3.checkbox("Lorazepam")
-    digoxin = fcol1.checkbox("Digoxin")
-    dipyridamole = fcol2.checkbox("Dipyridamole")
-    furosemide = fcol3.checkbox("Furosemide")
-    fluvoxamine = fcol1.checkbox("Fluvoxamine")
-    haloperidol = fcol2.checkbox("Haloperidol", help="Haldol")
-    hydrocortisone = fcol3.checkbox("Hydrocortisone")
-    iloperidone = fcol1.checkbox("Iloperidone")
-    morphine = fcol2.checkbox("Morphine")
-    nifedipine = fcol3.checkbox("Nifedipine")
-    paliperidone = fcol1.checkbox("Paliperidone")
-    prednisone = fcol2.checkbox("Prednisone")
-    ranitidine = fcol3.checkbox("Ranitidine")
-    risperidone = fcol1.checkbox("Risperidone")
-    trazodone = fcol2.checkbox("Trazodone", help="Triticum")
-    venlafaxine = fcol3.checkbox("Venlafaxine")
-    warfarin = fcol1.checkbox("Warfarin")
-    amitriptyline = fcol2.checkbox("Amitriptyline")
-    hydroxyzine = fcol3.checkbox("Hydroxyzine")
-    paroxetine = fcol1.checkbox(
-        "Paroxetine", help="Seroxat, Paxetil, Calmus, Denerval e Oxepar"
-    )
-    quetiapine = fcol2.checkbox("Quetiapine")
-    scopolamine = fcol3.checkbox("Scopolamine", help="Buscopan")
-    trihexyphenidyl = fcol1.checkbox("Trihexyphenidyl")
-    clonidine = fcol2.checkbox("Clonidine")
-    sertralina = fcol3.checkbox("Sertralina")
-    tramadol = fcol1.checkbox("Tramadol")
-    mexazolam = fcol2.checkbox("Mexazolam", help="Sedoxil")
-    trospium = fcol3.checkbox("Trospium")
-    alcoolico = fcol1.slider("Alcoolico", 0, 1, 0)
+    antipsicoticos = fcol3.multiselect(
+        'Antipsicóticos',
+        ['Haloperidol', 'Quetiapine', 'Risperidone', 'Paliperidone', 'Iloperidone'],
+        default=None,
+        help="HEP_TEXT"
+    ),
+    antidepressores = fcol3.multiselect(
+        'Antidepressores',
+        ['Fluvoxamine','Paroxetine', 'Sertralina', 'Venlafaxine', 'Trazodone', 'Amitriptyline'],
+        default=None,
+        help="HEP_TEXT"
+    ),
+    #antihipertensores = fcol3.multiselect(
+    #    'Antihipertensores',
+    #    ['Nifedipine','Captopril','Clonidine'],
+    #    default=None,
+    #    help="HEP_TEXT"
+    #),
+    analgesicos = fcol3.multiselect(
+        'Analgésicos',
+        ['Nifedipine','Captopril','Clonidine'],
+        default=None,
+        help="HEP_TEXT"
+    ),
+    anticoagulantes = fcol3.multiselect(
+        'Anticoagulantes',
+        ['Warfarin','Dipyridamole'],
+        default=None,
+        help="HEP_TEXT"
+    ),
+    corticosteroides = fcol3.multiselect(
+        'Corticosteroides',
+        ['Hydrocortisone','Prednisone'],
+        default=None,
+        help="HEP_TEXT"
+    ),
+    digitalicos = fcol3.multiselect(
+        'Digitálicos',
+        ['Digoxin'],
+        default=None,
+        help="HEP_TEXT"
+    ),
+    outrosMed = fcol3.multiselect(
+        'Outros Medicamentos',
+        ['Ranitidine','Scopolamine', 'Desloratadine', 'Hydroxyzine', 'Trihexyphenidyl', 'Trospium'],
+        default= None,
+        help="HEP_TEXT"
+    ),
+    
+    alcoolico = fcol1.radio("Consumo de alcool em excesso?", ["Sim", "Não"])
 
     # Guardar o dicionário numa variável
     user_data = {
         "proveniencia": proveniencia,
+        "grupoDiagnostico": grupoDiagnostico,
+        "localSU": localSU,
         "idade": idade,
-        "gender": convertGenderToInt(gender),
+        "gender": gender,
         "tempo": tempo,
+        "sirs" : sirs,
         "glicose": glicose,
         "sodio": sodio,
         "ureia": ureia,
@@ -98,47 +148,202 @@ def get_user_input_with_gasome(fcol1, fcol2, fcol3):
         "pcr": pcr,
         "ph": ph,
         "ca": ca,
-        "ureia": ureia,
         "co2": co2,
+        "o2": o2,
         "hco3": hco3,
-        "antidislipidemicos": antidislipidemicos,
-        "alprazolam": convertCheckboxToInt(alprazolam),
-        "captopril": convertCheckboxToInt(captopril),
-        "codeine": convertCheckboxToInt(codeine),
-        "desloratadine": convertCheckboxToInt(desloratadine),
-        "diazepam": convertCheckboxToInt(diazepam),
-        "lorazepam": convertCheckboxToInt(lorazepam),
-        "digoxin": convertCheckboxToInt(digoxin),
-        "dipyridamole": convertCheckboxToInt(dipyridamole),
-        "furosemide": convertCheckboxToInt(furosemide),
-        "fluvoxamine": convertCheckboxToInt(fluvoxamine),
-        "haloperidol": convertCheckboxToInt(haloperidol),
-        "hydrocortisone": convertCheckboxToInt(hydrocortisone),
-        "iloperidone": convertCheckboxToInt(iloperidone),
-        "morphine": convertCheckboxToInt(morphine),
-        "nifedipine": convertCheckboxToInt(nifedipine),
-        "paliperidone": convertCheckboxToInt(paliperidone),
-        "prednisone": convertCheckboxToInt(prednisone),
-        "ranitidine": convertCheckboxToInt(ranitidine),
-        "risperidone": convertCheckboxToInt(risperidone),
-        "trazodone": convertCheckboxToInt(trazodone),
-        "venlafaxine": convertCheckboxToInt(venlafaxine),
-        "warfarin": convertCheckboxToInt(warfarin),
-        "amitriptyline": convertCheckboxToInt(amitriptyline),
-        "hydroxyzine": convertCheckboxToInt(hydroxyzine),
-        "paroxetine": convertCheckboxToInt(paroxetine),
-        "quetiapine": convertCheckboxToInt(quetiapine),
-        "scopolamine": convertCheckboxToInt(scopolamine),
-        "trihexyphenidyl": convertCheckboxToInt(trihexyphenidyl),
-        "clonidine": convertCheckboxToInt(clonidine),
-        "sertralina": convertCheckboxToInt(sertralina),
-        "tramadol": convertCheckboxToInt(tramadol),
-        "mexazolam": convertCheckboxToInt(mexazolam),
-        "trospium": convertCheckboxToInt(trospium),
-        "alcoolico": alcoolico,
-        
+        "antidislipidemicos":antidislipidemicos,
+        "antipsicoticos":antipsicoticos,
+        "antidepressores":antidepressores,
+        "analgesicos":analgesicos,
+        "anticoagulantes": anticoagulantes,
+        "antidepressores": antidepressores,
+        "corticosteroides":corticosteroides,
+        "digitalicos":digitalicos,
+        "outrosMed":outrosMed, 
+        "alcoolico": alcoolico,  
     }
 
-    # Transformar os dados num dataframe
+    # Transformar os dados inseridos pelo utilizador num dataframe
     features = pd.DataFrame(user_data, index=[0])
     return features
+
+
+def convertLocalSu(variavel):
+    switcher = {
+        'AMBUL': 0,
+        'UCISU': 1,
+        'UDC1': 2,
+        'UDC2': 3,
+    }
+    return switcher[variavel[0]]
+
+def convertProv(variavel):
+    dic = {
+        'Casa': 1 if variavel[0] == 'Casa' else 0, 
+        'Inter-Hospitalar': 1 if variavel[0] == 'Inter-Hospitalar' else 0,
+        'Intra-Hospitalar': 1 if variavel[0] == 'Intra-Hospitalar' else 0,
+        'Lar': 1 if variavel[0] == 'Lar' else 0,
+    }
+    return dic
+
+
+def convertGrupoDiag(variavel):
+    dic = {
+        'GrupoDiagn_Hemato-Oncologico': 1 if variavel[0] == 'Hemato-Oncologico' else 0, 
+        'GrupoDiagn_Neurologico': 1 if variavel[0] == 'Neurologico' else 0,
+        'GrupoDiagn_Respiratorio': 1 if variavel[0] == 'Respiratorio' else 0,
+        'GrupoDiagn_Musculoesqueletico': 1 if variavel[0] == 'Musculo-esqueletico' else 0,
+        'GrupoDiagn_Cardiovascular': 1 if variavel[0] == 'Cardiovascular' else 0,
+        'GrupoDiagn_Geniturinario': 1 if variavel[0] == 'Geniturinário' else 0,
+        'GrupoDiagn_Gastrointestinal': 1 if variavel[0] == 'Gastrointestinal' else 0,
+        'GrupoDiagn_Outro': 1 if variavel[0] == 'Outro' else 0,
+    }
+    return dic
+
+
+def convert_user_input_data_to_predict_format(features):
+# Guardar o dicionário numa variável
+    data_to_predict = {
+        "Idade": normalize(features["idade"],18,100),
+        "Genero": convertGenderToInt(features["gender"]),
+        "Interna_Dias": normalize(features["tempo"],0.083,12),
+        "SIRS" : normalize(features["sirs"],0,4),
+        "Glicose": normalize(features["glicose"],41,1000),
+        "Sodio": normalize(features["sodio"],42,151),
+        "Ureia": normalize(features["ureia"],4,275),
+        "Creatinina": normalize(features["creatinina"],0.1,19.5),
+        "PCR": normalize(features["pcr"],2.3,499),
+        "pH": normalize(features["ph"],7.026,7.625),
+        "Ca_ionizado": normalize(features["ca"],0.84,1.37),
+        "pCO2": normalize(features["co2"],13.2,121.3),
+        "pO2": normalize(features["o2"],34.1,178.1),
+        "HCO3": normalize(features["hco3"],7.40,39.1),
+        "Local_SU": convertLocalSu(features["localSU"]),
+        "Antidislipidemicos": convertMultiSelect(features["antidislipidemicos"]),
+        "Antipsicoticos": convertMultiSelect(features["antipsicoticos"]),
+        "Antidepressores": convertMultiSelect(features["antidepressores"]),
+        "Analgesicos": convertMultiSelect(features["analgesicos"]),
+        "Anticoagulantes": convertMultiSelect(features["anticoagulantes"]),
+        "Alcoolico": convertMultiSelect(features["alcoolico"]),
+        "Corticosteroides": convertMultiSelect(features["corticosteroides"]),
+        "Digitalicos": convertMultiSelect(features["digitalicos"]),
+        "Outros Med_Presente": convertMultiSelect(features["outrosMed"]),
+    }
+
+    merged = {** data_to_predict, **convertProv(features["proveniencia"])}
+    merged = {** merged, **convertGrupoDiag(features["grupoDiagnostico"])}
+
+    return pd.DataFrame(merged, index=[0])
+    '''
+    # Transformar dados a prever num dataframe
+    features_to_predict = pd.DataFrame(data_to_predict, index=[0])
+    return features_to_predict
+    '''
+
+
+'''
+# defining the function which will make the prediction using the data which the user inputs 
+def prediction(proveniencia, idade, grupoDiagnostico, localSU, gender, tempo, sirs, glicose, sodio,ureia, creatinina, ph, ca, pcr, 
+    co2, o2, hco3, antidislipidemicos, antipsicoticos, antidepressores, antihipertensores, analgesicos, 
+    anticoagulantes,corticosteroides, digitalicos,outrosMed, alcoolico): 
+    Casa == []
+    InterHospitalar == []
+    IntraHospitalar == []
+    Lar == []
+    GrupoDiagnCardiovascular == []
+    GrupoDiagnGastrointestinal == []
+    GrupoDiagnGeniturinario == []
+    GrupoDiagn_Hemato_Oncologico== []
+    GrupoDiagn_Musculoesqueletico== []
+    GrupoDiagn_Neurologico== []
+    GrupoDiagn_Outro == []
+    GrupoDiagn_Respiratorio == []
+    Local_SU = localSU, 
+    Idade=normalize(idade,18,100)
+    Interna_Dias=tempo
+    SIRS=sirs
+    Glicose =glicose
+    Sodio=sodio
+    Ureia=ureia
+    Creatinina=creatinina
+    PCR=pcr
+    pH=ph
+    Ca_ionizado=ca
+    pCO2=co2
+    pO2=o2
+    HCO3=hco3
+    Genero == []
+    Antidislipidemicos == [],
+    Antipsicoticos == []
+    Antidepressores == []
+    Analgesicos == []
+    Anticoagulantes == []
+    Digitalicos == []
+    Corticosteroides == []
+    Alcoolico == alcoolico
+    OutrosMed_Presente == []
+    
+''' 
+'''
+variaveis que tenho de ter para a previsão: 
+Casa, Inter-Hospitalar, Intra-Hospitalar, Lar, GrupoDiagn_Cardiovascular, GrupoDiagn_Gastrointestinal,
+ GrupoDiagn_Geniturinario, GrupoDiagn_Hemato-Oncologico, GrupoDiagn_Musculoesqueletico, GrupoDiagn_Neurologico, GrupoDiagn_Outro,
+  GrupoDiagn_Respiratorio, Local_SU, Idade, Interna_Dias, SIRS, Glicose, Sodio, Ureia, Creatinina, PCR, pH, Ca_ionizado, pCO2, 
+  pO2, HCO3, Genero, Antidislipidemicos, Antipsicoticos, Antidepressores, Analgesicos, Anticoagulantes, Digitalicos, Corticosteroides, Outros Med_Presente, Alcoolico
+
+'''
+'''
+    # Pre-processing user input    
+if proveniencia == "Casa":
+    Casa = 0
+elif proveniencia == "Inter-Hospitalar":
+    InterHospitalar = 1
+elif proveniencia == "Intra-Hospitalar":
+    IntraHospitalar = 2
+else:
+    Lar = 3
+
+
+"Hemato-Oncologico","Neurologico","Respiratorio","Cardiovascular","Musculo-esqueletico","Geniturinário","Gastrointestinal","Outro"
+if grupoDiagnostico == "Cardiovascular":
+    grupodiagn = 0
+elif grupoDiagnostico == "Gastrointestinal":
+    GrupoDiagnCardiovascular = 1
+elif grupoDiagnostico == "Geniturinário":
+    IntraHospitalar = 2
+elif grupoDiagnostico == "Hemato-Oncologico":
+    GrupoDiagn_Hemato_Oncologico = 3
+elif grupoDiagnostico == "Musculo-esqueletico":
+    GrupoDiagn_Musculoesqueletico = 4
+elif grupoDiagnostico == "Neurologico":
+    GrupoDiagn_Neurologico = 5
+elif grupoDiagnostico == "Respiratorio":
+    GrupoDiagn_Respiratorio = 6 
+else:
+    GrupoDiagn_Outro = 7
+ 
+# Pre-processing user input    
+if gender == "Masculino":
+    Genero = 0
+else:
+    Genero = 1
+ 
+
+return Casa, InterHospitalar,IntraHospitalar, Lar, GrupoDiagnCardiovascular, GrupoDiagnGastrointestinal, GrupoDiagnGeniturinario, GrupoDiagn_Hemato_Oncologico, GrupoDiagn_Musculoesqueletico, GrupoDiagn_Neurologico, GrupoDiagn_Outro, GrupoDiagn_Respiratorio, Local_SU, Idade, Interna_Dias, SIRS, Glicose, Sodio, Ureia,Creatinina, PCR, pH, Ca_ionizado, pCO2, pO2, HCO3, Genero, Antidislipidemicos, Antipsicoticos, Antidepressores, Analgesicos, Anticoagulantes, Digitalicos, Corticosteroides, Outros Med_Presente, Alcoolico
+
+
+    # Making predictions 
+prediction = classifier.predict( 
+    [[Gender, Married, ApplicantIncome, LoanAmount, Credit_History]])
+     
+if prediction == 0:
+    pred = 'Rejected'
+else:
+    pred = 'Approved'
+return pred
+
+
+'''
+
+
+
