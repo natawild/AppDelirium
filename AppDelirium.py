@@ -2,7 +2,7 @@ import streamlit as st
 import numpy as np
 import pandas as pd
 from sklearn.linear_model import LogisticRegression
-from dadosComGasometria import get_user_input_with_gasome, convertMultiSelect,convert_user_input_data_to_predict_format
+from dadosComGasometria import get_user_input_with_gasome, convert_user_input_data_to_predict_format
 import joblib
 
 #Page headers

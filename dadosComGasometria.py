@@ -22,16 +22,6 @@ def convertMultiSelect(values):
         return 0
     return 1
 
-'''
-def convertMultiSelect(medi):
-    if not medi: 
-        res = 0
-        print(res)
-    else:
-        res=1
-        print(res)
-'''
-
 def convertGenderToInt(variavel):
     if variavel[0] == "Masculino":
         return 1
