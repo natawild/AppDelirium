@@ -52,33 +52,36 @@ def get_user_input_with_gasome(fcol1, fcol2, fcol3):
     gender = fcol1.radio("Selecione o sexo:", ("Masculino", "Feminino"))
     tempo = fcol1.number_input("Tempo de permanência no SU", min_value=0.08, max_value=12.0, step=0.01 ,help="Em dias")
     sirs = fcol1.slider("Critérios SIRS:",min_value=0, max_value=4, step=1, help="Temperatura corporal, Frequência respiratória, Frequência cardíaca, Número de leucócitos")
-    glicose = fcol3.number_input("Glicose", min_value=41.0, max_value=1000.0, step=0.01)
-    sodio = fcol2.number_input("Sódio", min_value=42.0, max_value=151.0, step=0.01)
-    ureia = fcol2.number_input("Ureia", min_value=4.0, max_value=275.0, step=0.01)
+    glicose = fcol3.number_input("Glicose (mg/dL)", min_value=41.0, max_value=1000.0, step=0.01)
+    sodio = fcol2.number_input("Sódio (mEq/L)", min_value=42.0, max_value=151.0, step=0.01)
+    ureia = fcol2.number_input("Ureia (mg/dL)", min_value=4.0, max_value=275.0, step=0.01)
     creatinina = fcol2.number_input(
-        "Creatinina", min_value=0.1, max_value=19.5, step=0.01
+        "Creatinina (mg/dL)", min_value=0.1, max_value=19.5, step=0.01
     )
-    pcr = fcol2.number_input("PCR", min_value=2.90, max_value=499.00, step=0.01)
+    pcr = fcol2.number_input("PCR (mg/L)", min_value=2.90, max_value=499.00, step=0.01)
     ph = fcol2.number_input("pH", min_value=7.026, max_value=7.625, step=0.001)
-    ca = fcol2.number_input("Cálcio ionizado", min_value=0.84, max_value=1.37, step=0.01)
-    co2 = fcol2.number_input("CO2", min_value=13.2, max_value=121.3, step=0.01)
-    o2 = fcol2.number_input("O2", min_value=34.1, max_value=178.1, step=0.01)
-    hco3 = fcol2.number_input("HCO3", min_value=7.40, max_value=39.1, step=0.01)
+    ca = fcol2.number_input("Cálcio ionizado (mmol/L)", min_value=0.84, max_value=1.37, step=0.01)
+    co2 = fcol2.number_input("Pressão parcial de dióxido de carbono (mm Hg)", min_value=13.2, max_value=121.3, step=0.01)
+    o2 = fcol2.number_input("Pressão parcial de oxigénio (mm Hg)", min_value=34.1, max_value=178.1, step=0.01)
+    hco3 = fcol2.number_input("Ião bicarbonato (mEq/L)", min_value=7.40, max_value=39.1, step=0.01)
 
     antidislipidemicos = fcol3.multiselect(
         'Antidislipidemicos',
         ['Rosuvastatina', 'Atorvastatina', 'Pravastatina', 'Sinvastatina', 'Fluvastatina'],
         default=None,
+        help="Rosuvastatina, Atorvastatina, Pravastatina, Sinvastatina, Fluvastatina"
     ),
     antipsicoticos = fcol3.multiselect(
         'Antipsicóticos',
         ['Haloperidol', 'Quetiapine', 'Risperidone', 'Paliperidone', 'Iloperidone'],
         default=None,
+        help="Haloperidol, Quetiapine, Risperidone, Paliperidone, Iloperidone"
     ),
     antidepressores = fcol3.multiselect(
         'Antidepressores',
         ['Fluvoxamine','Paroxetine', 'Sertralina', 'Venlafaxine', 'Trazodone', 'Amitriptyline'],
         default=None,
+        help="Fluvoxamine, Paroxetine, Sertralina, Venlafaxine, Trazodone, Amitriptyline"
     ),
     #antihipertensores = fcol3.multiselect(
     #    'Antihipertensores',
@@ -90,31 +93,31 @@ def get_user_input_with_gasome(fcol1, fcol2, fcol3):
         'Analgésicos',
         ['Nifedipine','Captopril','Clonidine'],
         default=None,
-        help="HEP_TEXT"
+        help="Nifedipine, Captopril, Clonidine"
     ),
     anticoagulantes = fcol3.multiselect(
         'Anticoagulantes',
         ['Warfarin','Dipyridamole'],
         default=None,
-        help="HEP_TEXT"
+        help="Warfarin, Dipyridamole"
     ),
     corticosteroides = fcol3.multiselect(
         'Corticosteroides',
         ['Hydrocortisone','Prednisone'],
         default=None,
-        help="HEP_TEXT"
+        help="Hydrocortisone, Prednisone"
     ),
     digitalicos = fcol3.multiselect(
         'Digitálicos',
         ['Digoxin'],
         default=None,
-        help="HEP_TEXT"
+        help="Digoxin"
     ),
     outrosMed = fcol3.multiselect(
         'Outros Medicamentos',
         ['Ranitidine','Scopolamine', 'Desloratadine', 'Hydroxyzine', 'Trihexyphenidyl', 'Trospium'],
         default= None,
-        help="Ranitidine, Scopolamine, Desloratadine, Hydroxyzine, Trihexyphenidyl, Trospium'"
+        help="Ranitidine, Scopolamine, Desloratadine, Hydroxyzine, Trihexyphenidyl, Trospium"
     ),
     
     alcoolico = fcol3.radio("Consumo de alcool em excesso?", ["Sim", "Não"])

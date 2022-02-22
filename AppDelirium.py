@@ -31,7 +31,7 @@ footer {visibility: hidden;}
 </style> """, unsafe_allow_html=True)
 
 #Page Title
-st.title('Previsão do risco de delirium em individuos admitidos em SU')
+st.title('Previsão do risco de delirium em indivíduos admitidos em SU')
 
 #change_text = """
 #    <style>
@@ -52,10 +52,10 @@ clf = joblib.load('final_model.sav')
 
 #Criacao de um título e subtitulo
 header_container.write("""
-Pretende-se com esta aplicação facilitar a estimação, em tempo real, da probabilidade de risco de desenvolvimento de delirum em individuos admitidos no Serviço de Urgência. Esta aplicação tem o objetivo de auxiliar os profissionais de saúde a tomarem as melhores medidas para o controlo de delirium. 
+Com esta aplicação pretende-se facilitar a estimação, em tempo real, da probabilidade de risco de desenvolvimento de delirum em indivíduos admitidos no Serviço de Urgência. Esta aplicação tem o objetivo de auxiliar os profissionais de saúde a tomarem as melhores medidas para o controlo de delirium. 
 """)
 
-filters_container.subheader("Formulario")
+filters_container.subheader("Formulário")
 filters_container.write("Por favor preencha todos os dados pedidos baixo para poder efetuar uma previsão de delirium")
 fcol1, fcol2, fcol3 = filters_container.columns(3)
 
@@ -74,9 +74,9 @@ results_container.write(user_input)
 
 def res(prediction):
     if prediction == 0:
-        pred = 'O individuo não corre risco de desenvolvimento de delirum'
+        pred = 'O indivíduo não corre risco de desenvolvimento de delirum'
     else:
-        pred = 'É provável que o individuo apresente Delirum'
+        pred = 'É provável que o indivíduo apresente Delirum'
     return pred
 
 
