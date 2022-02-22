@@ -11,8 +11,18 @@ st.set_page_config(
     page_icon=None, 
     layout="wide", 
     initial_sidebar_state="collapsed", 
-    menu_items=None
+    menu_items={
+         'Get Help': None,
+         'Report a bug': None,
+         'About': None
+     }
 )
+
+#remover side menu
+st.markdown(""" <style>
+#MainMenu {visibility: hidden;}
+footer {visibility: hidden;}
+</style> """, unsafe_allow_html=True)
 
 #Page Title
 st.title('Delirium Detection')
