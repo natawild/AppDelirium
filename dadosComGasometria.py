@@ -45,43 +45,40 @@ def normalize(value, min, max):
 
 def get_user_input_with_gasome(fcol1, fcol2, fcol3):
     
-    proveniencia = fcol3.selectbox("Proveniencia", ("Casa", "Inter-Hospitalar", "Intra-Hospitalar", "Lar"))
+    proveniencia = fcol1.selectbox("Local de Proveniencia", ("Casa", "Inter-Hospitalar", "Intra-Hospitalar", "Lar"))
     grupoDiagnostico = fcol1.selectbox("Grupo de Diagnóstico", ("Hemato-Oncologico","Neurologico","Respiratorio","Cardiovascular","Musculo-esqueletico","Geniturinário","Gastrointestinal","Outro"))
-    localSU = fcol1.selectbox("Proveniencia do doente",("AMBUL","UCISU","UDC1","UDC2"))
+    localSU = fcol1.selectbox("Estado do doente",("Ambulatório","UCISU","UDC1","UDC2"))
     idade = fcol1.slider("Idade", min_value=18, max_value=100, step=1)
-    gender = fcol2.radio("Selecione o sexo:", ("Masculino", "Feminino"))
-    tempo = fcol1.slider("Tempo em dias", min_value=0.00, max_value=15.0, step=0.01)
-    sirs = fcol2.slider("Critérios SIRS:",min_value=0, max_value=4, step=1)
-    glicose = fcol2.number_input("glicose", min_value=41.0, max_value=1000.0, step=0.01)
-    sodio = fcol2.number_input("sodio", min_value=42.0, max_value=151.0, step=0.01)
-    ureia = fcol2.number_input("ureia", min_value=4.0, max_value=275.0, step=0.01)
+    gender = fcol1.radio("Selecione o sexo:", ("Masculino", "Feminino"))
+    tempo = fcol1.number_input("Tempo de permanência no SU", min_value=0.08, max_value=12.0, step=0.01 ,help="Em dias")
+    sirs = fcol1.slider("Critérios SIRS:",min_value=0, max_value=4, step=1, help="Temperatura corporal, Frequência respiratória, Frequência cardíaca, Número de leucócitos")
+    glicose = fcol3.number_input("Glicose", min_value=41.0, max_value=1000.0, step=0.01)
+    sodio = fcol2.number_input("Sódio", min_value=42.0, max_value=151.0, step=0.01)
+    ureia = fcol2.number_input("Ureia", min_value=4.0, max_value=275.0, step=0.01)
     creatinina = fcol2.number_input(
-        "creatinina", min_value=0.1, max_value=19.5, step=0.01
+        "Creatinina", min_value=0.1, max_value=19.5, step=0.01
     )
-    pcr = fcol3.number_input("pcr", min_value=2.90, max_value=499.00, step=0.01)
-    ph = fcol1.number_input("ph", min_value=7.026, max_value=7.625, step=0.001)
-    ca = fcol2.number_input("ca", min_value=0.84, max_value=1.37, step=0.01)
-    co2 = fcol3.number_input("co2", min_value=13.2, max_value=121.3, step=0.01)
-    o2 = fcol1.number_input("o2", min_value=34.1, max_value=178.1, step=0.01)
-    hco3 = fcol2.number_input("hco3", min_value=7.40, max_value=39.1, step=0.01)
+    pcr = fcol2.number_input("PCR", min_value=2.90, max_value=499.00, step=0.01)
+    ph = fcol2.number_input("pH", min_value=7.026, max_value=7.625, step=0.001)
+    ca = fcol2.number_input("Cálcio ionizado", min_value=0.84, max_value=1.37, step=0.01)
+    co2 = fcol2.number_input("CO2", min_value=13.2, max_value=121.3, step=0.01)
+    o2 = fcol2.number_input("O2", min_value=34.1, max_value=178.1, step=0.01)
+    hco3 = fcol2.number_input("HCO3", min_value=7.40, max_value=39.1, step=0.01)
 
     antidislipidemicos = fcol3.multiselect(
         'Antidislipidemicos',
         ['Rosuvastatina', 'Atorvastatina', 'Pravastatina', 'Sinvastatina', 'Fluvastatina'],
         default=None,
-        help="HEP_TEXT"
     ),
     antipsicoticos = fcol3.multiselect(
         'Antipsicóticos',
         ['Haloperidol', 'Quetiapine', 'Risperidone', 'Paliperidone', 'Iloperidone'],
         default=None,
-        help="HEP_TEXT"
     ),
     antidepressores = fcol3.multiselect(
         'Antidepressores',
         ['Fluvoxamine','Paroxetine', 'Sertralina', 'Venlafaxine', 'Trazodone', 'Amitriptyline'],
         default=None,
-        help="HEP_TEXT"
     ),
     #antihipertensores = fcol3.multiselect(
     #    'Antihipertensores',
@@ -117,10 +114,10 @@ def get_user_input_with_gasome(fcol1, fcol2, fcol3):
         'Outros Medicamentos',
         ['Ranitidine','Scopolamine', 'Desloratadine', 'Hydroxyzine', 'Trihexyphenidyl', 'Trospium'],
         default= None,
-        help="HEP_TEXT"
+        help="Ranitidine, Scopolamine, Desloratadine, Hydroxyzine, Trihexyphenidyl, Trospium'"
     ),
     
-    alcoolico = fcol1.radio("Consumo de alcool em excesso?", ["Sim", "Não"])
+    alcoolico = fcol3.radio("Consumo de alcool em excesso?", ["Sim", "Não"])
 
     # Guardar o dicionário numa variável
     user_data = {
@@ -160,7 +157,7 @@ def get_user_input_with_gasome(fcol1, fcol2, fcol3):
 
 def convertLocalSu(variavel):
     switcher = {
-        'AMBUL': 0,
+        'Ambulatório': 0,
         'UCISU': 1,
         'UDC1': 2,
         'UDC2': 3,

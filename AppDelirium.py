@@ -7,7 +7,7 @@ import joblib
 
 #Page headers
 st.set_page_config(
-    page_title='Delirium Detection', 
+    page_title='Previsão do risco de delirium', 
     page_icon=None, 
     layout="wide", 
     #initial_sidebar_state="collapsed", 
@@ -18,9 +18,12 @@ st.set_page_config(
      }
 )
 
-st.sidebar.title("About")
-st.sidebar.write("App desenvolvida no ambito da dissetação...")
-
+st.sidebar.title("Sobre")
+st.sidebar.write("A aplicação foi desenvolvida por Célia Figueiredo, sob a orientação da Professora Doutora Ana Cristina Braga e co-orientação do Doutor José Mariz.") 
+st.sidebar.write("A sua construção fez parte da dissertação de conclusão do Mestrado em Engenharia de Sistemas da Universidade do Minho. O algoritmo de classificação utilizado foi a regressão logística que apresenta uma accuracy de 0,847, assim como, uma AUC da curva ROC de 0,83 e uma AUC da curva Precision-Recall 0,582. Este modelo é constituído por 26 variáveis independentes.")
+ 
+ 
+    
 #remover side menu
 st.markdown(""" <style>
 #MainMenu {visibility: hidden;}
@@ -28,7 +31,7 @@ footer {visibility: hidden;}
 </style> """, unsafe_allow_html=True)
 
 #Page Title
-st.title('Delirium Detection')
+st.title('Previsão do risco de delirium em individuos admitidos em SU')
 
 #change_text = """
 #    <style>
@@ -49,19 +52,18 @@ clf = joblib.load('final_model.sav')
 
 #Criacao de um título e subtitulo
 header_container.write("""
-App Delirium
-predict if someone has delirium using machine learning and python !
+Pretende-se com esta aplicação facilitar a estimação, em tempo real, da probabilidade de risco de desenvolvimento de delirum em individuos admitidos no Serviço de Urgência. Esta aplicação tem o objetivo de auxiliar os profissionais de saúde a tomarem as melhores medidas para o controlo de delirium. 
 """)
 
 filters_container.subheader("Formulario")
-filters_container.write("Por favor preencha dos dados a baixo para poder efectuar uma previsão de delirium")
+filters_container.write("Por favor preencha todos os dados pedidos baixo para poder efetuar uma previsão de delirium")
 fcol1, fcol2, fcol3 = filters_container.columns(3)
 
 # guardar o input do utilizador numa variavel
 user_input = get_user_input_with_gasome(fcol1, fcol2, fcol3)
 
 # Configurar uma subhead e mostrar aos utilizadores input
-results_container.subheader('Dados Introduzidos:')
+results_container.subheader('Verifique se introduziu os dados corretamente:')
 results_container.write(user_input)
 
 # Guardar o modelospd.DataFrame(data_to_predict, index=[0]) preditos numa variavel
@@ -72,16 +74,16 @@ results_container.write(user_input)
 
 def res(prediction):
     if prediction == 0:
-        pred = 'Sem delirium'
+        pred = 'O individuo não corre risco de desenvolvimento de delirum'
     else:
-        pred = 'Com delirum'
+        pred = 'É provável que o individuo apresente Delirum'
     return pred
 
 
 def predictP():
     input_data_converted = convert_user_input_data_to_predict_format(user_input)
     prediction = clf.predict(input_data_converted)
-    st.write('Previsão: ', res(prediction[0]))
+    st.write('Resultado:', res(prediction[0]))
 
 results_container.button(
     label='Calcular Previsão',
