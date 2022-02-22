@@ -10,13 +10,16 @@ st.set_page_config(
     page_title='Delirium Detection', 
     page_icon=None, 
     layout="wide", 
-    initial_sidebar_state="collapsed", 
+    #initial_sidebar_state="collapsed", 
     menu_items={
          'Get Help': None,
          'Report a bug': None,
          'About': None
      }
 )
+
+st.sidebar.title("About")
+st.sidebar.write("App desenvolvida no ambito da dissetação...")
 
 #remover side menu
 st.markdown(""" <style>
