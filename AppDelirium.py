@@ -57,10 +57,10 @@ Com esta aplicação pretende-se facilitar a estimação, em tempo real, da prob
 
 filters_container.subheader("Formulário")
 filters_container.write("Por favor preencha todos os dados pedidos baixo para poder efetuar uma previsão de delirium")
-fcol1, fcol2, fcol3 = filters_container.columns(3)
+fcol1, fcol2, fcol3, fcol4 = filters_container.columns(4)
 
 # guardar o input do utilizador numa variavel
-user_input = get_user_input_with_gasome(fcol1, fcol2, fcol3)
+user_input = get_user_input_with_gasome(fcol1, fcol2, fcol3, fcol4)
 
 # Configurar uma subhead e mostrar aos utilizadores input
 results_container.subheader('Verifique se introduziu os dados corretamente:')
@@ -83,12 +83,16 @@ def res(prediction):
 def predictP():
     input_data_converted = convert_user_input_data_to_predict_format(user_input)
     prediction = clf.predict(input_data_converted)
-    st.write('Resultado:', res(prediction[0]))
+    st.write(res(prediction[0]))
 
-results_container.button(
-    label='Calcular Previsão',
-    on_click=predictP()
-)
+#results_container.button(
+#    label='Calcular Previsão',
+#    on_click=predictP()
+#)
+
+
+results_container.subheader('Resultados da previsão:')
+predictP()
 
 
 #prediction = clf.predict(data_to_predict)

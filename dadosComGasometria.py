@@ -43,7 +43,7 @@ def normalize(value, min, max):
 
 
 
-def get_user_input_with_gasome(fcol1, fcol2, fcol3):
+def get_user_input_with_gasome(fcol1, fcol2, fcol3, fcol4):
     
     proveniencia = fcol1.selectbox("Local de Proveniencia", ("Casa", "Inter-Hospitalar", "Intra-Hospitalar", "Lar"))
     grupoDiagnostico = fcol1.selectbox("Grupo de Diagnóstico", ("Hemato-Oncologico","Neurologico","Respiratorio","Cardiovascular","Musculo-esqueletico","Geniturinário","Gastrointestinal","Outro"))
@@ -51,8 +51,8 @@ def get_user_input_with_gasome(fcol1, fcol2, fcol3):
     idade = fcol1.slider("Idade", min_value=18, max_value=100, step=1)
     gender = fcol1.radio("Selecione o sexo:", ("Masculino", "Feminino"))
     tempo = fcol1.number_input("Tempo de permanência no SU", min_value=0.08, max_value=12.0, step=0.01 ,help="Em dias")
-    sirs = fcol1.slider("Critérios SIRS:",min_value=0, max_value=4, step=1, help="Temperatura corporal, Frequência respiratória, Frequência cardíaca, Número de leucócitos")
-    glicose = fcol3.number_input("Glicose (mg/dL)", min_value=41.0, max_value=1000.0, step=0.01)
+    sirs = fcol2.slider("Critérios SIRS:",min_value=0, max_value=4, step=1, help="Temperatura corporal, Frequência respiratória, Frequência cardíaca, Número de leucócitos")
+    glicose = fcol2.number_input("Glicose (mg/dL)", min_value=41.0, max_value=1000.0, step=0.01)
     sodio = fcol2.number_input("Sódio (mEq/L)", min_value=42.0, max_value=151.0, step=0.01)
     ureia = fcol2.number_input("Ureia (mg/dL)", min_value=4.0, max_value=275.0, step=0.01)
     creatinina = fcol2.number_input(
@@ -60,10 +60,10 @@ def get_user_input_with_gasome(fcol1, fcol2, fcol3):
     )
     pcr = fcol2.number_input("PCR (mg/L)", min_value=2.90, max_value=499.00, step=0.01)
     ph = fcol2.number_input("pH", min_value=7.026, max_value=7.625, step=0.001)
-    ca = fcol2.number_input("Cálcio ionizado (mmol/L)", min_value=0.84, max_value=1.37, step=0.01)
-    co2 = fcol2.number_input("Pressão parcial de dióxido de carbono (mm Hg)", min_value=13.2, max_value=121.3, step=0.01)
-    o2 = fcol2.number_input("Pressão parcial de oxigénio (mm Hg)", min_value=34.1, max_value=178.1, step=0.01)
-    hco3 = fcol2.number_input("Ião bicarbonato (mEq/L)", min_value=7.40, max_value=39.1, step=0.01)
+    ca = fcol3.number_input("Cálcio ionizado (mmol/L)", min_value=0.84, max_value=1.37, step=0.01)
+    co2 = fcol3.number_input("Pressão parcial de dióxido de carbono (mm Hg)", min_value=13.2, max_value=121.3, step=0.01)
+    o2 = fcol3.number_input("Pressão parcial de oxigénio (mm Hg)", min_value=34.1, max_value=178.1, step=0.01)
+    hco3 = fcol3.number_input("Ião bicarbonato (mEq/L)", min_value=7.40, max_value=39.1, step=0.01)
 
     antidislipidemicos = fcol3.multiselect(
         'Antidislipidemicos',
@@ -77,7 +77,7 @@ def get_user_input_with_gasome(fcol1, fcol2, fcol3):
         default=None,
         help="Haloperidol, Quetiapine, Risperidone, Paliperidone, Iloperidone"
     ),
-    antidepressores = fcol3.multiselect(
+    antidepressores = fcol4.multiselect(
         'Antidepressores',
         ['Fluvoxamine','Paroxetine', 'Sertralina', 'Venlafaxine', 'Trazodone', 'Amitriptyline'],
         default=None,
@@ -89,68 +89,68 @@ def get_user_input_with_gasome(fcol1, fcol2, fcol3):
     #    default=None,
     #    help="HEP_TEXT"
     #),
-    analgesicos = fcol3.multiselect(
+    analgesicos = fcol4.multiselect(
         'Analgésicos',
         ['Nifedipine','Captopril','Clonidine'],
         default=None,
         help="Nifedipine, Captopril, Clonidine"
     ),
-    anticoagulantes = fcol3.multiselect(
+    anticoagulantes = fcol4.multiselect(
         'Anticoagulantes',
         ['Warfarin','Dipyridamole'],
         default=None,
         help="Warfarin, Dipyridamole"
     ),
-    corticosteroides = fcol3.multiselect(
+    corticosteroides = fcol4.multiselect(
         'Corticosteroides',
         ['Hydrocortisone','Prednisone'],
         default=None,
         help="Hydrocortisone, Prednisone"
     ),
-    digitalicos = fcol3.multiselect(
+    digitalicos = fcol4.multiselect(
         'Digitálicos',
         ['Digoxin'],
         default=None,
         help="Digoxin"
     ),
-    outrosMed = fcol3.multiselect(
+    outrosMed = fcol4.multiselect(
         'Outros Medicamentos',
         ['Ranitidine','Scopolamine', 'Desloratadine', 'Hydroxyzine', 'Trihexyphenidyl', 'Trospium'],
         default= None,
         help="Ranitidine, Scopolamine, Desloratadine, Hydroxyzine, Trihexyphenidyl, Trospium"
     ),
     
-    alcoolico = fcol3.radio("Consumo de alcool em excesso?", ["Sim", "Não"])
+    alcoolico = fcol1.radio("Consumo de alcool em excesso?", ["Sim", "Não"])
 
     # Guardar o dicionário numa variável
     user_data = {
-        "proveniencia": proveniencia,
-        "grupoDiagnostico": grupoDiagnostico,
+        "Proveniencia": proveniencia,
+        "Grupo de Diagnostico": grupoDiagnostico,
         "localSU": localSU,
-        "idade": idade,
-        "gender": gender,
-        "tempo": tempo,
-        "sirs" : sirs,
-        "glicose": glicose,
-        "sodio": sodio,
-        "ureia": ureia,
-        "creatinina": creatinina,
-        "pcr": pcr,
-        "ph": ph,
+        "Idade": idade,
+        "Género": gender,
+        "Tempo": tempo,
+        "Critérios SIRS" : sirs,
+        "Glicose": glicose,
+        "Sódio": sodio,
+        "Ureia": ureia,
+        "Creatinina": creatinina,
+        "PCR": pcr,
+        "pH": ph,
         "ca": ca,
-        "co2": co2,
-        "o2": o2,
-        "hco3": hco3,
-        "antidislipidemicos":antidislipidemicos,
-        "antipsicoticos":antipsicoticos,
-        "antidepressores":antidepressores,
-        "analgesicos":analgesicos,
-        "anticoagulantes": anticoagulantes,
-        "antidepressores": antidepressores,
-        "corticosteroides":corticosteroides,
-        "digitalicos":digitalicos,
-        "outrosMed":outrosMed, 
-        "alcoolico": alcoolico,  
+        "CO2": co2,
+        "O2": o2,
+        "HCO3": hco3,
+        "Antidislipidemicos":antidislipidemicos,
+        "Antipsicoticos":antipsicoticos,
+        "Antidepressores":antidepressores,
+        "Analgésicos":analgesicos,
+        "Anticoagulantes": anticoagulantes,
+        "Antidepressores": antidepressores,
+        "Corticosteroides":corticosteroides,
+        "Digitalicos":digitalicos,
+        "Outros Medicamentos":outrosMed, 
+        "Consumo de álcool": alcoolico,  
     }
 
     # Transformar os dados inseridos pelo utilizador num dataframe
@@ -194,34 +194,34 @@ def convertGrupoDiag(variavel):
 def convert_user_input_data_to_predict_format(features):
 # Guardar o dicionário numa variável
     data_to_predict = {
-        "Idade": normalize(features["idade"],18,100),
-        "Genero": convertGenderToInt(features["gender"]),
-        "Interna_Dias": normalize(features["tempo"],0.083,12),
-        "SIRS" : normalize(features["sirs"],0,4),
-        "Glicose": normalize(features["glicose"],41,1000),
-        "Sodio": normalize(features["sodio"],42,151),
-        "Ureia": normalize(features["ureia"],4,275),
-        "Creatinina": normalize(features["creatinina"],0.1,19.5),
-        "PCR": normalize(features["pcr"],2.3,499),
-        "pH": normalize(features["ph"],7.026,7.625),
+        "Idade": normalize(features["Idade"],18,100),
+        "Género": convertGenderToInt(features["Género"]),
+        "Interna_Dias": normalize(features["Tempo"],0.083,12),
+        "SIRS" : normalize(features["Critérios SIRS"],0,4),
+        "Glicose": normalize(features["Glicose"],41,1000),
+        "Sodio": normalize(features["Sódio"],42,151),
+        "Ureia": normalize(features["Ureia"],4,275),
+        "Creatinina": normalize(features["Creatinina"],0.1,19.5),
+        "PCR": normalize(features["PCR"],2.3,499),
+        "pH": normalize(features["pH"],7.026,7.625),
         "Ca_ionizado": normalize(features["ca"],0.84,1.37),
-        "pCO2": normalize(features["co2"],13.2,121.3),
-        "pO2": normalize(features["o2"],34.1,178.1),
-        "HCO3": normalize(features["hco3"],7.40,39.1),
+        "pCO2": normalize(features["CO2"],13.2,121.3),
+        "pO2": normalize(features["O2"],34.1,178.1),
+        "HCO3": normalize(features["HCO3"],7.40,39.1),
         "Local_SU": convertLocalSu(features["localSU"]),
-        "Antidislipidemicos": convertMultiSelect(features["antidislipidemicos"]),
-        "Antipsicoticos": convertMultiSelect(features["antipsicoticos"]),
-        "Antidepressores": convertMultiSelect(features["antidepressores"]),
-        "Analgesicos": convertMultiSelect(features["analgesicos"]),
-        "Anticoagulantes": convertMultiSelect(features["anticoagulantes"]),
-        "Alcoolico": convertMultiSelect(features["alcoolico"]),
-        "Corticosteroides": convertMultiSelect(features["corticosteroides"]),
-        "Digitalicos": convertMultiSelect(features["digitalicos"]),
-        "Outros Med_Presente": convertMultiSelect(features["outrosMed"]),
+        "Antidislipidemicos": convertMultiSelect(features["Antidislipidemicos"]),
+        "Antipsicoticos": convertMultiSelect(features["Antipsicoticos"]),
+        "Antidepressores": convertMultiSelect(features["Antidepressores"]),
+        "Analgesicos": convertMultiSelect(features["Analgésicos"]),
+        "Anticoagulantes": convertMultiSelect(features["Anticoagulantes"]),
+        "Alcoolico": convertMultiSelect(features["Consumo de álcool"]),
+        "Corticosteroides": convertMultiSelect(features["Corticosteroides"]),
+        "Digitalicos": convertMultiSelect(features["Digitalicos"]),
+        "Outros Med_Presente": convertMultiSelect(features["Outros Medicamentos"]),
     }
 
-    merged = {** data_to_predict, **convertProv(features["proveniencia"])}
-    merged = {** merged, **convertGrupoDiag(features["grupoDiagnostico"])}
+    merged = {** data_to_predict, **convertProv(features["Proveniencia"])}
+    merged = {** merged, **convertGrupoDiag(features["Grupo de Diagnostico"])}
 
     return pd.DataFrame(merged, index=[0])
     '''
