@@ -13,8 +13,8 @@ from sklearn.ensemble import RandomForestClassifier
 
 from sklearn.metrics import accuracy_score
 
-dadosComGasometria = pd.read_csv('/Users/user/Documents/GitHub/AppDelirium/DeliriumcomGasometria.csv')
+dadosComGasometria = pd.read_csv(
+    "/Users/user/Documents/GitHub/AppDelirium/DeliriumcomGasometria.csv"
+)
 
 print(dadosComGasometria.describe())
-
-

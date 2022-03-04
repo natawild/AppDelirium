@@ -1,0 +1,86 @@
+{'bootstrap': False,
+ 'max_depth': 27,
+ 'max_features': 'log2',
+ 'max_leaf_nodes': 100,
+ 'min_samples_leaf': 1,
+ 'min_samples_split': 11,
+ 'n_estimators': 224,
+ 'oob_score': False}
+
+
+ {'bootstrap': True,
+ 'max_depth': 85,
+ 'max_features': 'log2',
+ 'max_leaf_nodes': 145,
+ 'min_samples_leaf': 1,
+ 'min_samples_split': 5,
+ 'n_estimators': 336,
+ 'oob_score': True}
+
+
+Interna_Dias                     0.197228
+Ca_ionizado                      0.154483
+Idade                            0.145664
+Sodio                            0.136781
+pH                               0.116341
+SIRS                             0.106039
+HCO3                             0.087141
+pCO2                             0.079282
+pO2                              0.077315
+GrupoDiagn_Geniturinario         0.071727
+Glicose                          0.067564
+Creatinina                       0.059709
+Ureia                            0.050010
+Local_SU                         0.044916
+Outros Med_Presente              0.041845
+PCR                              0.038826
+GrupoDiagn_Neurologico           0.037938
+Lar                              0.035837
+Genero                           0.033378
+Antidepressores                  0.025248
+Inter-Hospitalar                 0.023532
+Antidislipidemicos               0.021578
+GrupoDiagn_Gastrointestinal      0.017453
+Ansioliticos                     0.016105
+GrupoDiagn_Musculoesqueletico    0.013928
+Analgesicos                      0.007118
+GrupoDiagn_Outro                 0.004691
+GrupoDiagn_Cardiovascular        0.003545
+Digitalicos                      0.001673
+GrupoDiagn_Hemato-Oncologico     0.001620
+
+
+
+
+
+Feature: {:38} Importance:  ('Idade', 0.15075815921322172)
+Feature: {:38} Importance:  ('PCR', 0.09361543910404038)
+Feature: {:38} Importance:  ('Ureia', 0.06786670077826279)
+Feature: {:38} Importance:  ('pO2', 0.0670369273419087)
+Feature: {:38} Importance:  ('Ca_ionizado', 0.06122573416597202)
+Feature: {:38} Importance:  ('Interna_Dias', 0.05102688511685179)
+Feature: {:38} Importance:  ('pH', 0.05051649410404391)
+Feature: {:38} Importance:  ('Glicose', 0.0496414958414727)
+Feature: {:38} Importance:  ('Genero', 0.04946231260951924)
+Feature: {:38} Importance:  ('pCO2', 0.04752602993604391)
+Feature: {:38} Importance:  ('Sodio', 0.046773489800191345)
+Feature: {:38} Importance:  ('Creatinina', 0.04320501848974862)
+Feature: {:38} Importance:  ('HCO3', 0.04300047325486716)
+Feature: {:38} Importance:  ('SIRS', 0.02326994490435124)
+Feature: {:38} Importance:  ('Local_SU', 0.020185454811919832)
+Feature: {:38} Importance:  ('GrupoDiagn_Geniturinario', 0.01709879906102092)
+Feature: {:38} Importance:  ('Casa', 0.01354058240130832)
+Feature: {:38} Importance:  ('GrupoDiagn_Cardiovascular', 0.01156183333899962)
+Feature: {:38} Importance:  ('Outros Med_Presente', 0.009692099484346697)
+Feature: {:38} Importance:  ('Antidislipidemicos', 0.008450928476053079)
+Feature: {:38} Importance:  ('Inter-Hospitalar', 0.007332023155033602)
+Feature: {:38} Importance:  ('Anti-hipertensores', 0.007176617257163736)
+Feature: {:38} Importance:  ('Ansioliticos', 0.005744688788218049)
+Feature: {:38} Importance:  ('GrupoDiagn_Outro', 0.005697582088077886)
+Feature: {:38} Importance:  ('Anticoagulantes', 0.005653816200582779)
+Feature: {:38} Importance:  ('GrupoDiagn_Gastrointestinal', 0.00556797508711734)
+Feature: {:38} Importance:  ('Intra-Hospitalar', 0.005422343616679723)
+Feature: {:38} Importance:  ('GrupoDiagn_Respiratorio', 0.004952848083549111)
+Feature: {:38} Importance:  ('Antidepressores', 0.004577555812636343)
+Feature: {:38} Importance:  ('Digitalicos', 0.0038061283714760003)
+Feature: {:38} Importance:  ('GrupoDiagn_Musculoesqueletico', 0.003750161624765451)

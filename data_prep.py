@@ -1,7 +1,6 @@
 from numpy import loadtxt
 from numpy import unique
 import pandas as pd
-from sklearn.feature_selection import VarianceThreshold
 from numpy import arange
 from matplotlib import pyplot
 from sklearn.model_selection import train_test_split

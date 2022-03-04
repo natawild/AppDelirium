@@ -23,7 +23,6 @@ from sklearn.model_selection import (
 
 from matplotlib import pyplot
 from numpy import mean, std
-from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier
 from mlxtend.feature_selection import SequentialFeatureSelector as SFS
 from mlxtend.plotting import plot_sequential_feature_selection as plot_sfs
@@ -40,7 +39,9 @@ from sklearn.metrics import (
     recall_score,
     roc_auc_score,
     roc_curve,
+    auc,
     f1_score,
+    precision_recall_curve
 )
 from sklearn.preprocessing import LabelEncoder, OneHotEncoder, label_binarize
 from sklearn.compose import make_column_transformer
@@ -56,13 +57,13 @@ import itertools
 def plot_confusion_matrix(
     cm, classes, normalize=False, title="Confusion matrix", cmap=plt.cm.Greens
 ):  # can change color
-    plt.figure(figsize=(10, 10))
+    plt.figure()
     plt.imshow(cm, interpolation="nearest", cmap=cmap)
-    plt.title(title, size=24)
+    plt.title(title, size=13)
     plt.colorbar(aspect=4)
     tick_marks = np.arange(len(classes))
-    plt.xticks(tick_marks, classes, rotation=45, size=14)
-    plt.yticks(tick_marks, classes, size=14)
+    plt.xticks(tick_marks, classes, rotation=45)
+    plt.yticks(tick_marks, classes)
     fmt = ".2f" if normalize else "d"
     thresh = cm.max() / 2.0
     # Label the plot
@@ -71,48 +72,16 @@ def plot_confusion_matrix(
             j,
             i,
             format(cm[i, j], fmt),
-            fontsize=20,
+            fontsize=12,
             horizontalalignment="center",
             color="white" if cm[i, j] > thresh else "black",
         )
     plt.grid(None)
     plt.tight_layout()
-    plt.ylabel("True label", size=18)
-    plt.xlabel("Predicted label", size=18)
+    plt.ylabel("Valor Real", size=12)
+    plt.xlabel("Valor Previsto", size=12)
     plt.show()
 
-
-def evaluate_model(y_test, y_pred, probs, y_train, train_predictions, train_probs):
-    prev_merics = {}
-    prev_merics["recall"] = recall_score(y_test, y_pred)
-    prev_merics["precision"] = precision_score(y_test, y_pred)
-    prev_merics["roc"] = roc_auc_score(y_test, probs)
-    prev_merics["f1"] = round(f1_score(y_test, y_pred), 4) * 100
-
-    train_metrics = {}
-    train_metrics["recall"] = recall_score(y_train, train_predictions)
-    train_metrics["precision"] = precision_score(y_train, train_predictions)
-    train_metrics["roc"] = roc_auc_score(y_train, train_probs)
-    train_metrics["f1"] = round(f1_score(y_train, train_predictions), 4) * 100
-    
-    for metric in ["recall", "precision", "roc"]:
-        resteste = round(prev_merics[metric], 2)
-        restrain = round(train_metrics[metric], 2)
-        print("Resultados: ", metric.capitalize(), " Previsao ", resteste, "Treino ", restrain)
-
-    # Calculate false positive rates and true positive rates
-    base_fpr, base_tpr, _ = roc_curve(y_test, [1 for _ in range(len(y_test))])
-    model_fpr, model_tpr, _ = roc_curve(y_test, probs)
-    plt.figure(figsize=(8, 6))
-    plt.rcParams["font.size"] = 16
-    # Plot both curves
-    plt.plot(base_fpr, base_tpr, "b", label="baseline")
-    plt.plot(model_fpr, model_tpr, "r", label="model")
-    plt.legend()
-    plt.xlabel("False Positive Rate")
-    plt.ylabel("True Positive Rate")
-    plt.title("ROC Curves")
-    plt.show()
 
 
 # load the dataset
@@ -124,6 +93,9 @@ def load_dataset(filename):
     y = data["Delirium"]
     return X, y
 
+###############################################################################
+#             Train model with all features                                   #
+###############################################################################
 
 X, y = load_dataset("./dados_apos_p_processamento.csv")
 
@@ -139,7 +111,7 @@ X_train, y_train = rus.fit_resample(X_train_des, y_train_des)
 
 
 # Create a random forest classifier
-clf = RandomForestClassifier()
+clf = RandomForestClassifier(random_state=11463247)
 
 # Train the classifier
 clf.fit(X_train, y_train)
@@ -177,17 +149,65 @@ print("ROC AUC \n", auc_score)
 matrix = confusion_matrix(y_test, y_pred)
 print(matrix)
 
+# Look at parameters used by current model
+print('Parameters currently in use:\n')
+pprint(clf.get_params())
+
 # Plot Confusion matrix
 plot_confusion_matrix(
     confusion_matrix(y_test, y_pred),
     classes=["0 - Sem Delirium", "1 - Delirium"],
-    title="without tuning Delirium Confusion Matrix",
+    title="Matriz de confusão sem seleção de variáveis (RF_RFECV)",
 )
 
 
-# Feature Selection by feature importance of random forest classifier 
+# calculate inputs for the roc curve
+fpr, tpr, thresholds = roc_curve(y_test, yhat_positive)
+# plot roc curve
+plt.plot(fpr, tpr, color='red', label='AUC ' + str(auc_score))
+plt.plot([0, 1], [0, 1], color='green', linestyle='--')
+# axis labels
+plt.xlabel('1 - Especificidade (FFP)')
+plt.ylabel('Sensibilidade (FVP)')
+plt.title('Curva ROC')
+# show the legend
+plt.legend()
+plt.show()
 
-sel = RFECV(RandomForestClassifier())
+
+#--------------------precision_recall_curve---------------
+
+# predict probabilities
+lr_probs = clf.predict_proba(X_test)
+# keep probabilities for the positive outcome only
+lr_probs = lr_probs[:, 1]
+# predict class values
+yhat = clf.predict(X_test)
+lr_precision, lr_recall, _ = precision_recall_curve(y_test, lr_probs)
+lr_f1, lr_auc = f1_score(y_test, yhat), auc(lr_recall, lr_precision)
+
+# summarize scores
+print('RF: f1=%.3f auc=%.3f' % (lr_f1, lr_auc))
+# plot the precision-recall curves
+no_skill = len(y_test[y_test==1]) / len(y_test)
+pyplot.plot(lr_recall, lr_precision, label='AUC ' + str(lr_auc))
+# axis labels
+pyplot.title('Curva Especificidade-Sensibilidade sem seleção de variáveis (RF_RFECV)')
+pyplot.xlabel('Sensibilidade')
+pyplot.ylabel('Especificidade')
+# show the legend
+pyplot.legend()
+# show the plot
+pyplot.show()
+
+
+
+
+###############################################################################
+#             Select most important features with RFECV                      #
+###############################################################################
+
+sel = RFECV(RandomForestClassifier(random_state=11463247))
 sel.fit(X_train,y_train)
 
 #return true or false if feature are selected or not 
@@ -200,6 +220,31 @@ print("Features selected:\n ", features_name)
 feature_importance = sel.estimator_.feature_importances_
 features_importance_pair = utils.get_index_value(feature_importance,features_support,X_train.columns)
 print(features_importance_pair)
+
+
+f_i = list(zip(features_name,clf.feature_importances_))
+f_i.sort(key = lambda x : x[1])
+plt.barh([x[0] for x in f_i],[x[1] for x in f_i])
+# axis labels
+plt.xlabel('Importância das variáveis')
+plt.ylabel('Variáveis')
+plt.title('Variáveis selecionadas e respetiva importância (RF_RFECV)')
+plt.show()
+
+
+plt.figure(figsize=(16, 6))
+plt.title('Total de variáveis selecionadas vs accuracy')
+plt.xlabel('Total de variáveis selecionadas')
+plt.ylabel('Model accuracy')
+plt.plot(range(1, len(sel.grid_scores_) + 1), sel.grid_scores_)
+plt.legend()
+plt.show()
+
+
+
+###############################################################################
+#             Train model with only the most important features               #
+###############################################################################
 
 
 # Create A Data Subset With Only The Most Important Features
@@ -216,44 +261,26 @@ X_test_rfc = sel.transform(X_test)
 clf = RandomForestClassifier()
 clf.fit(X_train_rfc,y_train)
 
-#predict results 
+##predict results 
 y_pred = clf.predict(X_test_rfc)
+
+
+# predict probabilities
+yhat = clf.predict_proba(X_test_rfc)
+
+
+# retrieve the probabilities for the positive class
+yhat_positive = yhat[:, 1]
 
 
 #calculate accuracy 
 acc = round(accuracy_score(y_test, y_pred), 4) * 100
 print("The accuracy of the model is:\n", acc)
 
-# predict probabilities
-yhat = clf.predict_proba(X_test_rfc)
-#print("#######YHAT: ", yhat)
-
-
-# retrieve the probabilities for the positive class
-yhat_positive = yhat[:, 1]
-#print("yhat_positive: ", yhat_positive)
 
 # calculate and print AUROC
 roc_auc = roc_auc_score(y_test, yhat_positive)
 print('AUROC: %.3f' % roc_auc)
-
-# calculate inputs for the roc curve
-fpr, tpr, thresholds = roc_curve(y_test, yhat_positive)
-# plot roc curve
-plt.plot(fpr, tpr, marker='.', label='AUC ' + str(roc_auc))
-# axis labels
-plt.xlabel('False Positive Rate')
-plt.ylabel('True Positive Rate')
-# show the legend
-plt.legend()
-plt.show()
-    
-# Plot Confusion matrix
-plot_confusion_matrix(
-    confusion_matrix(y_test, y_pred),
-    classes=["0 - Sem Delirium", "1 - Delirium"],
-    title="After selected Features Delirium Confusion Matrix",
-)
 
 recall = round(recall_score(y_test, y_pred), 4) * 100
 print("The recall of the model is:\n", recall)
@@ -267,11 +294,55 @@ print("The f1 of the model is:\n", f1)
 c_r = classification_report(y_test, y_pred)
 print("Classification report\n", c_r)
 
-auc_score = roc_auc_score(y_test, yhat_positive)
-print("ROC AUC \n", auc_score)
-
 matrix = confusion_matrix(y_test, y_pred)
 print(matrix)
+
+# calculate inputs for the roc curve
+fpr, tpr, thresholds = roc_curve(y_test, yhat_positive)
+# plot roc curve
+plt.plot(fpr, tpr, color='red', label='AUC ' + str(roc_auc))
+plt.plot([0, 1], [0, 1], color='green', linestyle='--')
+# axis labels
+plt.xlabel('1 - Especificidade (FFP)')
+plt.ylabel('Sensibilidade (FVP)')
+plt.title('Curva ROC das variáveis selecionadas (RF_RFECV)')
+# show the legend
+plt.legend()
+plt.show()
+
+    
+# Plot Confusion matrix
+plot_confusion_matrix(
+    confusion_matrix(y_test, y_pred),
+    classes=["0 - Sem Delirium", "1 - Delirium"],
+    title="Matriz de confusão após seleção de variáveis (RF_RFECV)",
+)
+
+
+# predict probabilities
+lr_probs = clf.predict_proba(X_test_rfc)
+# keep probabilities for the positive outcome only
+lr_probs = lr_probs[:, 1]
+# predict class values
+yhat = clf.predict(X_test_rfc)
+lr_precision, lr_recall, _ = precision_recall_curve(y_test, lr_probs)
+lr_f1, lr_auc = f1_score(y_test, yhat), auc(lr_recall, lr_precision)
+
+# summarize scores
+print('RF: f1=%.3f auc=%.3f' % (lr_f1, lr_auc))
+# plot the precision-recall curves
+no_skill = len(y_test[y_test==1]) / len(y_test)
+pyplot.plot(lr_recall, lr_precision, label='AUC ' + str(lr_auc))
+# axis labels
+pyplot.title('Curva Especificidade-Sensibilidade após seleção de variáveis (RF_RFECV)')
+pyplot.xlabel('Sensibilidade')
+pyplot.ylabel('Especificidade')
+# show the legend
+pyplot.legend()
+# show the plot
+pyplot.show()
+
+
 
 
 # Look at parameters used by our current forest
@@ -281,13 +352,22 @@ pprint(clf.get_params())
 
 
 ###############################################################################
-#             4c. Feature Selection: Selecting relevant features              #
+#             Tunning model                                                   #
 ###############################################################################
-
 seed=100
 
 # create a grid of parameters for the model to randomly pick and train, hence the name Random Search
-n_estimators = [int(x) for x in np.arange(start = 2, stop = 250, step = 1)]
+n_estimators = [100, 200, 500]
+max_features = ['auto']  # Number of features to consider at every split
+max_depth = [10,13, 15, 20, 50, 95, 100]   # Maximum number of levels in tree
+min_samples_split = [2, 12, 20, 30]  # Minimum number of samples required to split a node
+min_samples_leaf = [1, 10 , 20]   # Minimum number of samples required at each leaf node
+criterion = ['gini', 'entropy']
+max_leaf_nodes = [50, 100, 120]
+bootstrap = [True]  # Method of selecting samples for training each tree
+
+'''
+#n_estimators = [int(x) for x in np.arange(start = 2, stop = 250, step = 1)]
 max_features = ['auto', 'log2', 'sqrt']  # Number of features to consider at every split
 max_depth = [int(x) for x in np.arange(start = 1, stop = 100, step = 1)]   # Maximum number of levels in tree
 min_samples_split = [int(x) for x in np.arange(start = 2, stop = 20, step = 1)]  # Minimum number of samples required to split a node
@@ -296,7 +376,7 @@ criterion = ['gini', 'entropy']
 max_leaf_nodes = [int(x) for x in np.arange(start = 1, stop = 100, step = 1)]
 bootstrap = [True]  # Method of selecting samples for training each tree
 
-
+'''
 random_grid = {
     "n_estimators": n_estimators,
     "max_features": max_features,
@@ -309,24 +389,92 @@ random_grid = {
     "bootstrap": bootstrap,
 }
 
-# Create base model to tune
-rf = RandomForestClassifier(oob_score=True)
 
 # Create random search model and fit the data
 rf_random = RandomizedSearchCV(
-    estimator=rf,
+    estimator=clf,
     param_distributions=random_grid,
-    n_iter=100,
-    cv=5,
+    n_iter=10,
+    cv=RepeatedStratifiedKFold(),
     verbose=0,
     random_state=seed,
-    scoring="roc_auc",
+    scoring="f1",
 )
 
-rf_random.fit(X_train_rfc, y_train)
+'''
+#-------------------------------------------GridSearchCV--------------------------------------------------#
 
-print('Best params: ', rf_random.best_params_)
-best_model = rf_random.best_estimator_
+grid = GridSearchCV(estimator=clf,
+                    param_grid=rf_random,
+                    scoring='roc_auc',
+                    cv = RepeatedStratifiedKFold(), 
+                    verbose=0,
+                    n_jobs=-1)
+
+'''
+
+grid_result = rf_random.fit(X_train_rfc, y_train)
+
+# print winning set of hyperparameters
+print("Best set of hyperparameters \n ",grid_result.best_estimator_.get_params())
+print('Best params: \n', grid_result.best_params_)
+
+
+# Use the best model after tuning --------------------------
+
+best_model = grid_result.best_estimator_
+
+best_model.fit(X_train_rfc, y_train)
+
+y_pred_best_model = best_model.predict(X_test_rfc)
+train_rf_predictions = best_model.predict(X_train_rfc)
+train_rf_probs = best_model.predict_proba(X_train_rfc)[:, 1]
+rf_probs = best_model.predict_proba(X_test_rfc)[:, 1]
+
+
+#calculate accuracy 
+acc = round(accuracy_score(y_test, y_pred_best_model), 4) * 100
+print("The accuracy of the model is:\n", acc)
+
+recall = round(recall_score(y_test, y_pred_best_model), 4) * 100
+print("The recall of the model is:\n", recall)
+
+precision = round(precision_score(y_test, y_pred_best_model), 4) * 100
+print("The precision of the model is:\n", precision)
+
+f1 = round(f1_score(y_test, y_pred_best_model), 4) * 100
+print("The f1 of the model is:\n", f1)
+
+c_r = classification_report(y_test, y_pred_best_model)
+print("Classification report\n", c_r)
+
+matrix = confusion_matrix(y_test, y_pred_best_model)
+print(matrix)
+
+auc_score= roc_auc_score(y_test, rf_probs)
+print("AUC SCORE:", auc_score)
+
+
+# calculate inputs for the roc curve
+fpr, tpr, thresholds = roc_curve(y_test, rf_probs)
+# plot roc curve
+plt.plot(fpr, tpr, color='red', label='AUC ' + str(auc_score))
+plt.plot([0, 1], [0, 1], color='green', linestyle='--')
+# axis labels
+plt.xlabel('1 - Especificidade (FFP)')
+plt.ylabel('Sensibilidade (FVP)')
+plt.title('Curva ROC após tuning (RF_RFECV)')
+# show the legend
+plt.legend()
+plt.show()
+
+
+# Plot Confusion matrix
+plot_confusion_matrix(
+    confusion_matrix(y_test, y_pred_best_model),
+    classes=["0 - Sem Delirium", "1 - Delirium"],
+    title="Matriz de confusão após tuning (RF_RFECV)",
+)
 
 
 # To look at nodes and depths of trees use on average
@@ -338,27 +486,30 @@ for ind_tree in best_model.estimators_:
 print(f"Average number of nodes {int(np.mean(n_nodes))}")
 print(f"Average maximum depth {int(np.mean(max_depths))}")
 
-# Use the best model after tuning
-best_model = rf_random.best_estimator_
-print(best_model)
 
+#--------------------precision_recall_curve---------------
 
-#pipe_best_model = make_pipeline(col_trans, best_model)
-best_model.fit(X_train_rfc, y_train)
-y_pred_best_model = best_model.predict(X_test_rfc)
+# predict probabilities
+lr_probs = clf.predict_proba(X_test_rfc)
+# keep probabilities for the positive outcome only
+lr_probs = lr_probs[:, 1]
+# predict class values
+yhat = clf.predict(X_test_rfc)
+lr_precision, lr_recall, _ = precision_recall_curve(y_test, lr_probs)
+lr_f1, lr_auc = f1_score(y_test, yhat), auc(lr_recall, lr_precision)
 
+# summarize scores
+print('RF: f1=%.3f auc=%.3f' % (lr_f1, lr_auc))
+# plot the precision-recall curves
+no_skill = len(y_test[y_test==1]) / len(y_test)
+pyplot.plot(lr_recall, lr_precision, label='AUC ' + str(lr_auc))
+# axis labels
+pyplot.title('Curva Especificidade-Sensibilidade após afinação (RF_RFECV)')
+pyplot.xlabel('Sensibilidade')
+pyplot.ylabel('Especificidade')
+# show the legend
+pyplot.legend()
+# show the plot
+pyplot.show()
 
-train_rf_predictions = best_model.predict(X_train_rfc)
-train_rf_probs = best_model.predict_proba(X_train_rfc)[:, 1]
-rf_probs = best_model.predict_proba(X_test_rfc)[:, 1]
-# Plot ROC curve and check scores
-evaluate_model(y_test, y_pred_best_model, rf_probs, y_train, train_rf_predictions, train_rf_probs)
-
-
-# Plot Confusion matrix
-plot_confusion_matrix(
-    confusion_matrix(y_test, y_pred_best_model),
-    classes=["0 - Sem Delirium", "1 - Delirium"],
-    title="After Delirium Confusion Matrix",
-)
 

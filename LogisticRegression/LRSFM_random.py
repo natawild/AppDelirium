@@ -374,7 +374,7 @@ plt.barh([x[0] for x in f_i],[x[1] for x in f_i])
 # axis labels
 plt.xlabel('Importância das variáveis')
 plt.ylabel('Variáveis')
-plt.title('Variáveis selecionadas e respetiva importância (RL_SFM1.5)')
+plt.title('Variáveis selecionadas e respetiva importância (RL_SFM0.09)')
 plt.show()
 
 

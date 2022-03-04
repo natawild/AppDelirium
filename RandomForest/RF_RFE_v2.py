@@ -124,6 +124,10 @@ def load_dataset(filename):
     y = data["Delirium"]
     return X, y
 
+###############################################################################
+#             Train model with all features                                   #
+###############################################################################
+
 
 X, y = load_dataset("./dados_apos_p_processamento.csv")
 
@@ -185,7 +189,9 @@ plot_confusion_matrix(
 )
 
 
-# Feature Selection by feature importance of random forest classifier 
+###############################################################################
+#             Select most important features with RFE                         #
+###############################################################################
 
 sel = RFE(RandomForestClassifier())
 sel.fit(X_train,y_train)
@@ -199,6 +205,10 @@ print("Features selected:\n ", features_name)
 feature_importance = sel.estimator_.feature_importances_
 features_importance_pair = utils.get_index_value(feature_importance,features_support,X_train.columns)
 print(features_importance_pair)
+
+###############################################################################
+#             Train model with only the most important features               #
+###############################################################################
 
 
 # Create A Data Subset With Only The Most Important Features
@@ -278,9 +288,8 @@ print('Parameters currently in use:\n')
 pprint(clf.get_params())
 
 
-
 ###############################################################################
-#             4c. Feature Selection: Selecting relevant features              #
+#             Tunning model                                                   #
 ###############################################################################
 
 seed=100

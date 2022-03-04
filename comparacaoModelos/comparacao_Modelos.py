@@ -1,11 +1,18 @@
 import streamlit as st
 import numpy as np
 import pandas as pd
-import seaborn as sns 
+import seaborn as sns
 import statsmodels.api as sm
-from sklearn.model_selection import RandomizedSearchCV, train_test_split, GridSearchCV
+from sklearn.model_selection import (
+    RandomizedSearchCV,
+    train_test_split,
+    GridSearchCV,
+    RepeatedStratifiedKFold,
+    cross_val_score,
+    KFold,
+)
 from imblearn.under_sampling import RandomUnderSampler, NearMiss, OneSidedSelection
-from mlxtend.feature_selection import SequentialFeatureSelector as SFS 
+from mlxtend.feature_selection import SequentialFeatureSelector as SFS
 from mlxtend.plotting import plot_sequential_feature_selection as plot_sfs
 from sklearn.tree import plot_tree
 import category_encoders as ce
@@ -13,19 +20,39 @@ import matplotlib.pyplot as plt
 from sklearn.pipeline import make_pipeline, Pipeline
 from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import accuracy_score, classification_report, confusion_matrix, precision_score, recall_score, roc_auc_score, roc_curve, f1_score
-from sklearn.preprocessing import LabelEncoder,OneHotEncoder, label_binarize
+from sklearn.metrics import (
+    accuracy_score,
+    classification_report,
+    confusion_matrix,
+    precision_score,
+    recall_score,
+    roc_auc_score,
+    roc_curve,
+    f1_score,
+)
+from sklearn.preprocessing import LabelEncoder, OneHotEncoder, label_binarize
 from sklearn.compose import make_column_transformer
 from numpy import asarray
 import missingno as msno
 import itertools
-from pprint import pprint 
-import matplotlib.pyplot as plt 
+from pprint import pprint
+import matplotlib.pyplot as plt
 from imblearn.over_sampling import ADASYN
-from sklearn.feature_selection import SelectKBest, RFE, SelectPercentile, f_classif, mutual_info_classif
+from sklearn.feature_selection import (
+    SelectKBest,
+    RFE,
+    SelectPercentile,
+    f_classif,
+    mutual_info_classif,
+)
 from sklearn.utils import class_weight
+from xgboost import XGBClassifier
 import xgboost as xgb
 from collections import Counter
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.naive_bayes import GaussianNB
+from sklearn.svm import SVC
 
 
 seed = 100  # so that the result is reproducible
@@ -37,67 +64,65 @@ def load_dataset(filename):
     # load the dataset as a pandas DataFrame
     data = pd.read_csv(filename)
     # split into input (X) and output (y) variables
-    X = data.drop('Delirium',axis=1)
-    y = data['Delirium']
+    X = data.drop("Delirium", axis=1)
+    y = data["Delirium"]
     return X, y
 
+
 def generate_model_report(y_actual, y_predicted):
-    print("Accuracy = " , accuracy_score(y_actual, y_predicted))
-    print("Precision = " ,precision_score(y_actual, y_predicted))
-    print("Recall = " ,recall_score(y_actual, y_predicted))
-    print("F1 Score = " ,f1_score(y_actual, y_predicted))
+    print("Accuracy = ", accuracy_score(y_actual, y_predicted))
+    print("Precision = ", precision_score(y_actual, y_predicted))
+    print("Recall = ", recall_score(y_actual, y_predicted))
+    print("F1 Score = ", f1_score(y_actual, y_predicted))
     pass
 
 
 def generate_auc_roc_curve(clf, X_test):
     y_pred_proba = clf.predict_proba(X_test)[:, 1]
-    fpr, tpr, thresholds = roc_curve(y_test,  y_pred_proba)
+    fpr, tpr, thresholds = roc_curve(y_test, y_pred_proba)
     auc = roc_auc_score(y_test, y_pred_proba)
-    plt.plot(fpr,tpr,label="AUC ROC Curve with Area Under the curve ="+str(auc))
+    plt.plot(fpr, tpr, label="AUC ROC Curve with Area Under the curve =" + str(auc))
     plt.legend(loc=4)
     plt.show()
     pass
 
 
+X, y = load_dataset("./dados_apos_p_processamento.csv")
 
-X, y = load_dataset('./dados_apos_p_processamento.csv')
+X_train_des, X_test, y_train_des, y_test = train_test_split(
+    X, y, test_size=0.36, random_state=45673
+)
 
-X_train_des, X_test, y_train_des, y_test = train_test_split(X, y, test_size=0.36, random_state=45673)
 
-
-# Fazer overSample apenas dos dados de treino, pois se fizer de todos, pode acontecer de ter repetidos nos dados de teste 
-rus = ADASYN(random_state = 32)
+# Fazer overSample apenas dos dados de treino, pois se fizer de todos, pode acontecer de ter repetidos nos dados de teste
+rus = ADASYN(random_state=32)
 X_train, y_train = rus.fit_resample(X_train_des, y_train_des)
 
 
 unique, count = np.unique(y_train, return_counts=True)
-y_train_smote_value_count = { k:v for (k,v) in zip(unique, count)}
+y_train_smote_value_count = {k: v for (k, v) in zip(unique, count)}
 print(y_train_smote_value_count)
-
-
-
 
 
 clf = LogisticRegression().fit(X_train, y_train)
 
 Y_Test_Pred = clf.predict(X_test)
 
-crosstable = pd.crosstab(Y_Test_Pred, y_test, rownames=['Predicted'], colnames=['Actual'])
+crosstable = pd.crosstab(
+    Y_Test_Pred, y_test, rownames=["Predicted"], colnames=["Actual"]
+)
 print(crosstable)
 
 print(generate_model_report(y_test, Y_Test_Pred))
 print(generate_auc_roc_curve(clf, X_test))
 
 
-
-weights = np.linspace(0.05, 0.95, 20)
+weights = np.linspace(0.05, 0.95, 10)
 gsc = GridSearchCV(
     estimator=LogisticRegression(),
-    param_grid={
-        'class_weight': [{0: x, 1: 1.0-x} for x in weights]
-    },
-    scoring='f1',
-    cv=5
+    param_grid={"class_weight": [{0: x, 1: 1.0 - x} for x in weights]},
+    scoring="f1",
+    cv=5,
 )
 
 grid_result = gsc.fit(X_train, y_train)
@@ -106,60 +131,166 @@ print("Best parameters : %s" % grid_result.best_params_)
 
 clf = LogisticRegression(**grid_result.best_params_).fit(X_train, y_train)
 Y_Test_Pred = clf.predict(X_test)
-cross_table = pd.crosstab(Y_Test_Pred, y_test, rownames=['Predicted'], colnames=['Actual'])
+cross_table = pd.crosstab(
+    Y_Test_Pred, y_test, rownames=["Predicted"], colnames=["Actual"]
+)
 print(cross_table)
-print('Regressão Logistica melhores parametros',generate_model_report(y_test, Y_Test_Pred))
+print(
+    "Regressão Logistica com melhores parametros",
+    generate_model_report(y_test, Y_Test_Pred),
+)
 print(generate_auc_roc_curve(clf, X_test))
 
 
-X_train_g, X_test, y_train_g, y_test = train_test_split(X, y, test_size=0.36, random_state=45673)
+clf = RandomForestClassifier().fit(X_train, y_train)
+
+Y_Test_Pred = clf.predict(X_test)
+
+crosstable = pd.crosstab(
+    Y_Test_Pred, y_test, rownames=["Predicted"], colnames=["Actual"]
+)
+print("RandomForestClassifier:\n", crosstable)
+
+print(generate_model_report(y_test, Y_Test_Pred))
+print(generate_auc_roc_curve(clf, X_test))
+
+
+X_train_g, X_test, y_train_g, y_test = train_test_split(
+    X, y, test_size=0.36, random_state=45673
+)
+
+
+...
+# define model
+model = XGBClassifier()
+
+# define grid
+weights = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 25]
+param_grid = dict(scale_pos_weight=weights)
+
+# define evaluation procedure
+cv = RepeatedStratifiedKFold(n_splits=10, n_repeats=5, random_state=1)
+# define grid search
+grid = GridSearchCV(
+    estimator=model, param_grid=param_grid, n_jobs=-1, cv=cv, scoring="roc_auc"
+)
+
+# execute the grid search
+grid_result = grid.fit(X_train_g, y_train_g)
+
+# report the best configuration
+print("Best: %f using %s" % (grid_result.best_score_, grid_result.best_params_))
+
+# report all configurations
+means = grid_result.cv_results_["mean_test_score"]
+stds = grid_result.cv_results_["std_test_score"]
+params = grid_result.cv_results_["params"]
+for mean, stdev, param in zip(means, stds, params):
+    print("%f (%f) with: %r" % (mean, stdev, param))
+
+
+# Implementing the model
+xgb_model = xgb.XGBClassifier(scale_pos_weight=6).fit(X_train_g, y_train_g)
+
+y_pred_xgb_scaled = xgb_model.predict(X_test)
+print(
+    "OLA XGBClassifier com best params",
+    generate_model_report(y_test, y_pred_xgb_scaled),
+)
+print(generate_auc_roc_curve(xgb_model, X_test))
+
+crosstable = pd.crosstab(
+    y_pred_xgb_scaled, y_test, rownames=["Predicted"], colnames=["Actual"]
+)
+print(crosstable)
 
 
 xgb_model = xgb.XGBClassifier().fit(X_train_g, y_train_g)
 y_pred_xgb = xgb_model.predict(X_test)
 
-print('OLA',generate_model_report(y_test, y_pred_xgb))
+print("OLA", generate_model_report(y_test, y_pred_xgb))
 print(generate_auc_roc_curve(xgb_model, X_test))
-crosstable = pd.crosstab(y_pred_xgb, y_test, rownames=['Predicted'], colnames=['Actual'])
+crosstable = pd.crosstab(
+    y_pred_xgb, y_test, rownames=["Predicted"], colnames=["Actual"]
+)
 print(crosstable)
 
-
+# estimate a value for the scale_pos_weight xgboost hyperparameter
 # Caculating the ratio
 counter = Counter(y_train_g)
 estimate = counter[0] / counter[1]
+print("Estimate: %.3f" % estimate)
 
 # Implementing the model
 xgb_model = xgb.XGBClassifier(scale_pos_weight=estimate).fit(X_train_g, y_train_g)
 
 y_pred_xgb_scaled = xgb_model.predict(X_test)
-print('OLA XGBClassifier',generate_model_report(y_test, y_pred_xgb_scaled))
+print("OLA XGBClassifier", generate_model_report(y_test, y_pred_xgb_scaled))
 print(generate_auc_roc_curve(xgb_model, X_test))
 
-crosstable = pd.crosstab(y_pred_xgb_scaled, y_test, rownames=['Predicted'], colnames=['Actual'])
+crosstable = pd.crosstab(
+    y_pred_xgb_scaled, y_test, rownames=["Predicted"], colnames=["Actual"]
+)
 print(crosstable)
 
 
-
-
-summary = pd.DataFrame(data={
-'labels': ['Accuracy', 'Precision', 'Recall', 'F1_score', 'roc_auc'],
-'log_reg_over': [accuracy_score(y_test, Y_Test_Pred), precision_score(y_test, Y_Test_Pred), recall_score(y_test, Y_Test_Pred), f1_score(y_test, Y_Test_Pred), roc_auc_score(y_test, Y_Test_Pred)],
-'XGBoost': [accuracy_score(y_test, y_pred_xgb), precision_score(y_test, y_pred_xgb), recall_score(y_test, y_pred_xgb), f1_score(y_test, y_pred_xgb), roc_auc_score(y_test, y_pred_xgb)],
-'XGBoost_scaled': [accuracy_score(y_test, y_pred_xgb_scaled), precision_score(y_test, y_pred_xgb_scaled), recall_score(y_test, y_pred_xgb_scaled), f1_score(y_test, y_pred_xgb_scaled), roc_auc_score(y_test, y_pred_xgb_scaled)]
-}).set_index('labels')
+summary = pd.DataFrame(
+    data={
+        "labels": ["Accuracy", "Precision", "Recall", "F1_score", "roc_auc"],
+        "log_reg_over": [
+            accuracy_score(y_test, Y_Test_Pred),
+            precision_score(y_test, Y_Test_Pred),
+            recall_score(y_test, Y_Test_Pred),
+            f1_score(y_test, Y_Test_Pred),
+            roc_auc_score(y_test, Y_Test_Pred),
+        ],
+        "XGBoost": [
+            accuracy_score(y_test, y_pred_xgb),
+            precision_score(y_test, y_pred_xgb),
+            recall_score(y_test, y_pred_xgb),
+            f1_score(y_test, y_pred_xgb),
+            roc_auc_score(y_test, y_pred_xgb),
+        ],
+        "XGBoost_scaled": [
+            accuracy_score(y_test, y_pred_xgb_scaled),
+            precision_score(y_test, y_pred_xgb_scaled),
+            recall_score(y_test, y_pred_xgb_scaled),
+            f1_score(y_test, y_pred_xgb_scaled),
+            roc_auc_score(y_test, y_pred_xgb_scaled),
+        ],
+    }
+).set_index("labels")
 summary.index.name = None
 
 print(summary)
-
 
 
 fig, ax = plt.subplots(figsize=(12, 6))
 summary.plot.bar(ax=ax)
 ax.legend(bbox_to_anchor=(1, 1), frameon=False)
 ax.grid(False)
-ax.set_title('Models Comparison for Each Metric')
+ax.set_title("Models Comparison for Each Metric")
 
 plt.xticks(rotation=0, fontsize=14)
 plt.tight_layout()
 plt.show()
 
+
+# Spot-Check Algorithms
+models = []
+models.append(("Logistic Regression", LogisticRegression()))
+models.append(("CART", DecisionTreeClassifier()))
+models.append(("Random Forest (RF)", RandomForestClassifier()))
+
+
+
+# evaluate each model in turn
+results = []
+names = []
+for name, model in models:
+    kfold = KFold(n_splits=20)
+    cv_results = cross_val_score(model, X_train, y_train, cv=kfold, scoring="recall")
+    print(results.append(cv_results))
+    names.append(name)
+    msg = "%s: %f (%f)" % (name, cv_results.mean(), cv_results.std())
+    print(msg)
