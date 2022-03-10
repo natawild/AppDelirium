@@ -19,7 +19,7 @@ st.set_page_config(
 )
 
 st.sidebar.title("Sobre")
-st.sidebar.write("A aplicação foi desenvolvida por Célia Figueiredo, sob a orientação da Professora Doutora Ana Cristina Braga e co-orientação do Doutor José Mariz.") 
+st.sidebar.write("A aplicação foi desenvolvida por Célia Figueiredo, sob a orientação da Professora Doutora Ana Cristina Braga e coorientação do Doutor José Mariz.") 
 st.sidebar.write("A sua construção fez parte da dissertação de conclusão do Mestrado em Engenharia de Sistemas da Universidade do Minho. O algoritmo de classificação utilizado foi a regressão logística que apresenta uma accuracy de 0,847, assim como, uma AUC da curva ROC de 0,83 e uma AUC da curva Precision-Recall 0,582. Este modelo é constituído por 26 variáveis independentes.")
  
  
