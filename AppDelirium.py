@@ -63,7 +63,8 @@ fcol1, fcol2, fcol3, fcol4 = filters_container.columns(4)
 user_input = get_user_input_with_gasome(fcol1, fcol2, fcol3, fcol4)
 
 # Configurar uma subhead e mostrar aos utilizadores input
-results_container.subheader('Verifique se introduziu os dados corretamente:')
+results_container.subheader('Verificação dos dados introduzidos')
+results_container.write('Por favor verifique na tabela abaixo se os dados introduzidos correspondem aos valores pretendidos')
 results_container.write(user_input)
 
 # Guardar o modelospd.DataFrame(data_to_predict, index=[0]) preditos numa variavel

@@ -52,18 +52,18 @@ def get_user_input_with_gasome(fcol1, fcol2, fcol3, fcol4):
     gender = fcol1.radio("Selecione o sexo:", ("Masculino", "Feminino"))
     tempo = fcol1.number_input("Tempo de permanência no SU", min_value=0.08, max_value=12.0, step=0.01 ,help="Em dias")
     sirs = fcol2.slider("Critérios SIRS:",min_value=0, max_value=4, step=1, help="Temperatura corporal, Frequência respiratória, Frequência cardíaca, Número de leucócitos")
-    glicose = fcol2.number_input("Glicose (mg/dL)", min_value=41.0, max_value=1000.0, step=0.01)
-    sodio = fcol2.number_input("Sódio (mEq/L)", min_value=42.0, max_value=151.0, step=0.01)
-    ureia = fcol2.number_input("Ureia (mg/dL)", min_value=4.0, max_value=275.0, step=0.01)
+    glicose = fcol2.number_input("Glicose (mg/dL)", min_value=41.0, max_value=1000.0, step=0.01, value=90.0)
+    sodio = fcol2.number_input("Sódio (mEq/L)", min_value=42.0, max_value=151.0, step=0.01, value= 136.0)
+    ureia = fcol2.number_input("Ureia (mg/dL)", min_value=4.0, max_value=275.0, step=0.01, value = 21.0)
     creatinina = fcol2.number_input(
-        "Creatinina (mg/dL)", min_value=0.1, max_value=19.5, step=0.01
+        "Creatinina (mg/dL)", min_value=0.1, max_value=19.5, step=0.01, value=0.8
     )
     pcr = fcol2.number_input("PCR (mg/L)", min_value=2.90, max_value=499.00, step=0.01)
-    ph = fcol2.number_input("pH", min_value=7.026, max_value=7.625, step=0.001)
-    ca = fcol3.number_input("Cálcio ionizado (mmol/L)", min_value=0.84, max_value=1.37, step=0.01)
-    co2 = fcol3.number_input("Pressão parcial de dióxido de carbono (mm Hg)", min_value=13.2, max_value=121.3, step=0.01)
-    o2 = fcol3.number_input("Pressão parcial de oxigénio (mm Hg)", min_value=34.1, max_value=178.1, step=0.01)
-    hco3 = fcol3.number_input("Ião bicarbonato (mEq/L)", min_value=7.40, max_value=39.1, step=0.01)
+    ph = fcol2.number_input("pH", min_value=7.026, max_value=7.625, step=0.001, value=7.38)
+    ca = fcol3.number_input("Cálcio ionizado (mmol/L)", min_value=0.84, max_value=1.37, step=0.01, value=1.21)
+    co2 = fcol3.number_input("Pressão parcial de dióxido de carbono (mm Hg)", min_value=13.2, max_value=121.3, step=0.01, value=36.3)
+    o2 = fcol3.number_input("Pressão parcial de oxigénio (mm Hg)", min_value=34.1, max_value=178.1, step=0.01, value=87.9)
+    hco3 = fcol3.number_input("Ião bicarbonato (mEq/L)", min_value=7.40, max_value=39.1, step=0.01, value=24.6)
 
     antidislipidemicos = fcol3.multiselect(
         'Antidislipidemicos',
@@ -120,7 +120,7 @@ def get_user_input_with_gasome(fcol1, fcol2, fcol3, fcol4):
         help="Ranitidine, Scopolamine, Desloratadine, Hydroxyzine, Trihexyphenidyl, Trospium"
     ),
     
-    alcoolico = fcol1.radio("Consumo de alcool em excesso?", ["Sim", "Não"])
+    alcoolico = fcol1.radio("Consumo de alcool em excesso?", ["Sim", "Não"], index=1)
 
     # Guardar o dicionário numa variável
     user_data = {
