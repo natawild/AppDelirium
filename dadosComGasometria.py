@@ -47,7 +47,7 @@ def get_user_input_with_gasome(fcol1, fcol2, fcol3, fcol4):
     
     proveniencia = fcol1.selectbox("Local de Proveniencia", ("Casa", "Inter-Hospitalar", "Intra-Hospitalar", "Lar"))
     grupoDiagnostico = fcol1.selectbox("Grupo de Diagnóstico", ("Hemato-Oncologico","Neurologico","Respiratorio","Cardiovascular","Musculo-esqueletico","Geniturinário","Gastrointestinal","Outro"))
-    localSU = fcol1.selectbox("Estado do doente",("Ambulatório","UCISU","UDC1","UDC2"))
+    localSU = fcol1.selectbox("Tipo de admissão",("Ambulatório","UCISU","UDC1","UDC2"))
     idade = fcol1.slider("Idade", min_value=18, max_value=100, step=1)
     gender = fcol1.radio("Selecione o sexo:", ("Masculino", "Feminino"))
     tempo = fcol1.number_input("Tempo de permanência no SU", min_value=0.08, max_value=12.0, step=0.01 ,help="Em dias")
@@ -126,7 +126,7 @@ def get_user_input_with_gasome(fcol1, fcol2, fcol3, fcol4):
     user_data = {
         "Proveniencia": proveniencia,
         "Grupo de Diagnostico": grupoDiagnostico,
-        "localSU": localSU,
+        "Tipo de admissão": localSU,
         "Idade": idade,
         "Género": gender,
         "Tempo": tempo,
@@ -208,7 +208,7 @@ def convert_user_input_data_to_predict_format(features):
         "pCO2": normalize(features["CO2"],13.2,121.3),
         "pO2": normalize(features["O2"],34.1,178.1),
         "HCO3": normalize(features["HCO3"],7.40,39.1),
-        "Local_SU": convertLocalSu(features["localSU"]),
+        "Tipo de admissão": convertLocalSu(features["Tipo de admissão"]),
         "Antidislipidemicos": convertMultiSelect(features["Antidislipidemicos"]),
         "Antipsicoticos": convertMultiSelect(features["Antipsicoticos"]),
         "Antidepressores": convertMultiSelect(features["Antidepressores"]),
